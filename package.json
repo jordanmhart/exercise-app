@@ -1,0 +1,33 @@
+{
+  "name": "exerciseapp",
+  "version": "0.0.1",
+  "description": "this is an exercise app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/ddsooxo/exercise-app.git"
+  },
+  "author": "Dechen, Melodie, and Jordan",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/ddsooxo/exercise-app#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^2.10.2",
+    "body-parser": "^1.14.1",
+    "bookshelf": "^0.8.2",
+    "cookie-parser": "^1.4.0",
+    "express": "^4.13.3",
+    "express-session": "^1.11.3",
+    "gulp": "^3.9.0",
+    "jade": "^1.11.0",
+    "knex": "^0.8.6",
+    "lodash": "^3.10.1",
+    "passport": "^0.3.0",
+    "passport-local": "^1.0.0",
+    "pg": "^4.4.3",
+    "request": "^2.65.0"
+  }
+}
