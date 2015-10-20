@@ -29,5 +29,8 @@
     "passport-local": "^1.0.0",
     "pg": "^4.4.3",
     "request": "^2.65.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0"
   }
 }
