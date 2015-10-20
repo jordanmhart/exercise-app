@@ -4,8 +4,9 @@ var Group = bookshelf.Model.extend({
 	tableName: 'groups',
 	hasTimestamps: true,
 	users: function(){
-		return this.hasMany('User', 'user_id');
-		//check in with Kirk/Clark for many to many
+		return this.belongsToMany(User)
+		.through(Role)
+		.withPivot(['role']);
 	}
 });
 

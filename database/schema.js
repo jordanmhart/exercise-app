@@ -1,6 +1,8 @@
 var knex = require('knex')({
 	client: 'pg',
 	connection: {
+	user: 'exercise',
+	password: 'pot@t0D1v3r',
     host     : 'localhost',
     database : 'exercise_app'
   }	
@@ -20,7 +22,6 @@ bookshelf.knex.schema.hasTable('users')
 			user.string('password', 150).notNullable();
 			user.text('bio', 1000).notNullable().defaultTo('');
 			user.string('photo_url').notNullable().defaultTo('');
-			user.string('role', 200).notNullable().defaultTo('guest');
 			user.timestamps();
 		})
 		.then(function (table){
@@ -70,19 +71,20 @@ bookshelf.knex.schema.hasTable('exercises')
 	}
 });
 
-//User to Group Column
-bookshelf.knex.schema.hasTable('users_to_groups')
+//Role Column
+bookshelf.knex.schema.hasTable('roles')
 .then(function(exists){
 	if(!exists){
-		bookshelf.knex.schema.createTable('users_to_groups', function (user_to_group){
-			user_to_group.increments('id').primary();
-			user_to_group.integer('user_id', 255);
-			user_to_group.integer('group_id', 255);
-			user_to_group.boolean('invite_accepted');
-			user_to_group.timestamps();
+		bookshelf.knex.schema.createTable('roles', function (role){
+			role.increments('id').primary();
+			role.integer('user_id', 255);
+			role.integer('group_id', 255);
+			role.string('role', 200).notNullable().defaultTo('guest');			
+			role.boolean('invite_accepted');
+			role.timestamps();
 		})
 		.then(function (table) {
-			console.log('Created User to Group Table', table)
+			console.log('Created Role Table', table)
 		}); 
 	}
 });

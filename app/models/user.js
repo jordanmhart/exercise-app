@@ -4,11 +4,12 @@ var User = bookshelf.Model.extend({
 	tableName: 'users',
 	hasTimestamps: true,
 	groups: function(){
-		return this.hasMany('Group', 'group_id');
-		//check in with Kirk/Clark for many to many
+		return this.belongsToMany(Group)
+		.through(Role)
+		.withPivot(['role']);
 	},
 	exercises: function(){
-		return this.hasMany('Exercise', 'exercise_id');
+		return this.hasMany(Exercise, 'user_id');
 	}
 });
 
