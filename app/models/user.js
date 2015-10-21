@@ -5,8 +5,8 @@ var User = bookshelf.Model.extend({
 	hasTimestamps: true,
 	groups: function(){
 		return this.belongsToMany(Group)
-		.through(Role)
-		.withPivot(['role']);
+		.through(Membership)
+		.withPivot(['membership']);
 	},
 	exercises: function(){
 		return this.hasMany(Exercise, 'user_id');
