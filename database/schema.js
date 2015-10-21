@@ -1,12 +1,12 @@
 var knex = require('knex')({
 	client: 'pg',
 	connection: {
+	host: process.env.DATABASE_HOST,
 	user: process.env.DATABASE_USER,
-	password: process.env.DATABASE_PASSWORD,
-    host     : process.env.DATABASE_HOST,
-    database : 'exercise_app'
+	password: process.env.DATABASE_PASS,
+	database: 'exercise_app'
   }	
-})
+});
 
 var bookshelf = require('bookshelf')(knex);
 bookshelf.plugin('registry');
@@ -26,7 +26,7 @@ bookshelf.knex.schema.hasTable('users')
 			user.timestamps();
 		})
 		.then(function (table){
-			console.log('Created User Table', table)
+			console.log('Created User Table', table);
 		});
 	}
 });
