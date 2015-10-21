@@ -12,13 +12,25 @@ var GroupsController = require('./app/controllers/groups-controller');
 //database
 var bookshelf = require('./database/schema');
 
+
+//setting up public folder
+app.use(express.static(path.join(__dirname, 'public')));
+
+//all env
+app.set('port', process.env.PORT || 3000);
+
 //view engine
 app.set('views', path.join(__dirname, 'app/views'));
 app.set('view engine', 'jade');
 
+//render index
+// app.get('/', function (req, res) {
+//   res.render('index', { title: 'xercise app'});
+// });
+
 //passport
 //user authentication
-var User = ('./models/user'); 
+var User = ('./models/user');
 
 //bcrypt encryption--ASK KIRK IF this should move?
 passport.use(new LocalStrategy(function (username, password, done) {
