@@ -8,6 +8,42 @@ var Users = require('../collections/users');
 var bcrypt = require('bcrypt-nodejs'),
     passport = require('passport');
 
+//POST
+//Login
+exports.login = function(req, res, next) {
+
+    passport.authenticate(
+        'local',
+        {failureRedirect: '/register'},
+        function(err, user, info) {
+
+            if(err) {
+                res.render('/', {title: 'Sign In', errorMessage: err.message});
+            }
+
+            if(!user) {
+                res.render('/', {title: 'Sign In', errorMessage: info.message});
+            }
+
+            req.logIn(user, function(err) {
+              if(err) {
+                res.render('/', {title: 'Sign In', errorMessage: err.message});
+              } else {
+                res.redirect('/groups');
+              }
+            });
+        })(req, res, next);
+};
+
+exports.logout = function(req, res, next) {
+   if(!req.isAuthenticated()) {
+      notFound404(req, res, next);
+   } else {
+      req.logout();
+      res.redirect('/');
+   }
+};
+
 //GET
 //loads login page -- home page[for now]
 exports.login_form = function (req, res){var users = Users;
@@ -29,14 +65,13 @@ exports.login_form = function (req, res){var users = Users;
 }
 
 //POST
-//user info for login saved to db --redirect to groups
 exports.login = function (req, res){
   var hash = bcrypt.hashSync(req.body.password);
   User.forge({
     password: hash,
     email: req.body.email
   })
-  .save()
+  .fetch()
   .then( function (data) {
     req.method = 'get';
     res.redirect('/groups');

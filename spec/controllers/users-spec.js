@@ -36,30 +36,19 @@ describe('UsersController', function() {
         }
       };
 
-      console.log('before post');
 
       request.post(options, function(error, response, body) {
         expect(response.statusCode).toBe(302);
-        console.log('before fetch');
         new User({
           email: 'test@email.com'
         })
         .fetch()
         .then(function(createdUser) {
           expect(createdUser.id).toBeDefined();
-          console.log('before forge');
           new User({
             id: createdUser.id
           })
           .destroy();
-          console.log('after destroy, user id: ' + createdUser.id);
-
-          // .then(function(){
-          // })
-          // .catch(function(error) {
-          //   console.log(error);
-          //   done.fail(error);
-          // });
           done();
         });
       });
@@ -75,7 +64,7 @@ describe('UsersController', function() {
         full_name: 'test full_name',
         nickname: 'test nickname',
         password: 'test password',
-        email: 'test@email.com3',
+        email: 'test@email.com2',
         bio: 'tell me bout you with data'
       })
       .save()
@@ -101,7 +90,7 @@ describe('UsersController', function() {
       var options = {
         url: 'http://localhost:3000/login',
         form: {
-          email: 'test@email.com3',
+          email: 'test@email.com2',
           password: 'test password'
         }
       };
