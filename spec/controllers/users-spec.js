@@ -1,11 +1,19 @@
 var request = require('request');
 var User = require('../../app/models/user');
-var UsersController = require('../../app/controllers/users-controller');
+var UsersController = require('../../app/controllers/users');
 
 
 describe('UsersController', function() {
 
-  describe('tests wihtout data', function() {
+  describe('tests without data', function() {
+
+    // show login page
+    it('should load the login form', function (done) {
+      request('http://localhost:3000', function(error, response, body) {
+        expect(response.statusCode).toBe(200);
+        done();
+      });
+    });
 
     // show registration form
     it('should load the registration form', function (done) {
@@ -23,14 +31,78 @@ describe('UsersController', function() {
           full_name: 'test name',
           email: 'test@email.com',
           password: 'test password',
-          bio: 'tell me bout you'
+          bio: 'tell me bout you no data'
         }
       };
 
       request.post(options, function(error, response, body) {
         expect(response.statusCode).toBe(302);
         new User({
+          email: 'test@email.com'
+        })
+        .fetch()
+        .then(function(user) {
+          expect(user.id).toBeDefined();
+          new User({
+            id: user.id
+          })
+          .destroy()
+          .then(function(){
+            console.log("we have destroyed it");
+            done();
+          })
+          .catch(function(error) {
+            console.log(error);
+            done.fail(error);
+          });
+        });
+      });
+    });
+  });
+
+  
+  describe('tests with data', function() {
+    var user;
+
+    beforeEach(function(done) {
+      new User({
+        full_name: 'test name',
+        password: 'test password',
+        email: 'test@email.com2',
+        bio: 'tell me bout you with data'
+      })
+      .save()
+      .then(function(newUser) {
+        user = newUser;
+        done();
+      });
+    });
+
+    afterEach(function(done) {
+      new User({
+        id: user.id
+      }).destroy()
+        .then(done)
+        .catch(function(error) {
+          done.fail(error);
+        });
+    });
+
+
+    //login a user
+    it('should login a user', function(done) {
+      var options = {
+        url: 'http://localhost:3000/login',
+        form: {
           email: 'test@email.com',
+          password: 'test password'
+        }
+      };
+
+      request.post(options, function(error, response, body) {
+        expect(response.statusCode).toBe(302);
+        new User({
+          id: user.id
         })
         .fetch()
         .then(function(user) {
@@ -43,34 +115,7 @@ describe('UsersController', function() {
         });
       });
     });
-  });
 
-  // describe('tests with data', function() {
-  //   var user;
-
-  //   beforeEach(function(done) {
-  //     new User({
-  //       username: 'test username',
-  //         password: 'test password',
-  //         email: 'test@email.com',
-  //         bio: 'tell me bout you'
-  //     })
-  //     .save()
-  //     .then(function(newUser) {
-  //       user = newUser;
-  //       done();
-  //     });
-  //   });
-
-  //   afterEach(function(done) {
-  //     new User({
-  //       id: user.id
-  //     }).destroy()
-  //       .then(done)
-  //       .catch(function(error) {
-  //         done.fail(error);
-  //       });
-  //   });
 
   //   // //list users questions
   //   // it('should list a users questions', function(done) {
@@ -144,5 +189,5 @@ describe('UsersController', function() {
   //     });
   //   });
     
-  // });
+  });
 });

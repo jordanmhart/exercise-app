@@ -1,12 +1,12 @@
 var knex = require('knex')({
 	client: 'pg',
 	connection: {
-	user     : process.env.DATABASE_USER,
-	password : process.env.DATABASE_PASS,
-    host     : process.env.DATABASE_HOST,
-    database : 'exercise_app'
+	host: process.env.DATABASE_HOST,
+	user: process.env.DATABASE_USER,
+	password: process.env.DATABASE_PASS,
+	database: 'exercise_app'
   }	
-})
+});
 
 var bookshelf = require('bookshelf')(knex);
 bookshelf.plugin('registry');
@@ -18,6 +18,7 @@ bookshelf.knex.schema.hasTable('users')
 		bookshelf.knex.schema.createTable('users', function (user){
 			user.increments('id').primary();
 			user.string('full_name', 300).notNullable().defaultTo('');
+			user.string('nickname',300).notNullable().defaultTo('');
 			user.string('email', 250).unique().notNullable().defaultTo('');
 			user.string('password', 150).notNullable();
 			user.text('bio', 1000).notNullable().defaultTo('');
@@ -25,7 +26,7 @@ bookshelf.knex.schema.hasTable('users')
 			user.timestamps();
 		})
 		.then(function (table){
-			console.log('Created User Table', table)
+			console.log('Created User Table', table);
 		});
 	}
 });
@@ -40,8 +41,8 @@ bookshelf.knex.schema.hasTable('groups')
 			group.string('name',150).unique().notNullable().defaultTo('');
 			group.text('description', 2000).unique().notNullable().defaultTo('');
 			group.string('stage',150).unique().notNullable().defaultTo('');
-			group.date('start_date',150).unique().notNullable();
-			group.date('end_date',150).unique().notNullable();
+			group.date('start_date',150).unique();
+			group.date('end_date',150).unique();
 			group.integer('exercise_length',100).unique().notNullable().defaultTo(30);
 			group.integer('days_per_week',100).unique().notNullable().defaultTo(5);
 			group.timestamps();
@@ -71,20 +72,20 @@ bookshelf.knex.schema.hasTable('exercises')
 	}
 });
 
-//Role Column
-bookshelf.knex.schema.hasTable('roles')
+//Membership Column
+bookshelf.knex.schema.hasTable('memberships')
 .then(function(exists){
 	if(!exists){
-		bookshelf.knex.schema.createTable('roles', function (role){
-			role.increments('id').primary();
-			role.integer('user_id', 255);
-			role.integer('group_id', 255);
-			role.string('role', 200).notNullable().defaultTo('guest');			
-			role.boolean('invite_accepted');
-			role.timestamps();
+		bookshelf.knex.schema.createTable('memberships', function (membership){
+			membership.increments('id').primary();
+			membership.integer('user_id', 255);
+			membership.integer('group_id', 255);
+			membership.string('membership', 200).notNullable().defaultTo('guest');			
+			membership.boolean('invite_accepted');
+			membership.timestamps();
 		})
 		.then(function (table) {
-			console.log('Created Role Table', table)
+			console.log('Created Membership Table', table)
 		}); 
 	}
 });

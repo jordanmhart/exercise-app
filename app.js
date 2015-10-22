@@ -8,9 +8,18 @@ var express = require('express'),
   bcrypt = require('bcrypt-nodejs'),
   LocalStrategy = require('passport-local').Strategy;
 
-var GroupsController = require('./app/controllers/groups-controller');
+//controllers
+var GroupsController = require('./app/controllers/groups'),
+  UsersController = require('./app/controllers/users');
+
 //database
 var bookshelf = require('./database/schema');
+
+//setting up public folder
+app.use(express.static(path.join(__dirname, 'public')));
+
+//all env
+app.set('port', process.env.PORT || 3000);
 
 //view engine
 app.set('views', path.join(__dirname, 'app/views'));
@@ -18,7 +27,7 @@ app.set('view engine', 'jade');
 
 //passport
 //user authentication
-var User = ('./models/user'); 
+var User = ('./models/user');
 
 //bcrypt encryption--ASK KIRK IF this should move?
 passport.use(new LocalStrategy(function (username, password, done) {
@@ -51,13 +60,34 @@ passport.deserializeUser(function(id, done) {
  });
 });
 
+//view engine
+app.set('views', path.join(__dirname, 'app/views'));
+app.set('view engine', 'jade');
 
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true }));
+app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use(cookieParser());
+app.use(session({secret: 'keyboard cat', resave: true, saveUninitialized: true}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+//--------------------------ROUTES--------------------------
 //group routes
-app.get('/', GroupsController.index);
+app.get('/groups', GroupsController.index);
+app.get('/creategroup', GroupsController.creategroup);
+app.post('/creategroup', GroupsController.create);
 
 //user routes
+app.get('/', UsersController.login_form);
+app.get('/register', UsersController.register);
+app.post('/register', UsersController.create);
+app.post('/login', UsersController.login)
 
 
 
 app.listen(3000);
 console.log('listening on port 3000 and thinking of ice cream');
+
