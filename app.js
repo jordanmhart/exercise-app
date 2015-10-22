@@ -79,7 +79,9 @@ app.use(passport.session());
 app.get('/groups', GroupsController.index);
 app.get('/creategroup', GroupsController.creategroup);
 app.post('/creategroup', GroupsController.create);
-
+app.get('/group/:id/edit',GroupsController.edit);
+app.post('/group/:id/update', GroupsController.update);
+app.post('/group/:id/delete', GroupsController.destroy);
 //user routes
 app.get('/', UsersController.login_form);
 app.get('/register', UsersController.register);

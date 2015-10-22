@@ -31,7 +31,9 @@ describe('GroupsController', function() {
           name: 'test group title',
           description: 'group description',
           exercise_length: 5,
-          days_per_week: 7
+          days_per_week: 7,
+          start_date: '2015-12-15',
+          end_date: '2015-12-31'
         }
       };
       request.post(options, function (error, response, body) {
@@ -47,7 +49,6 @@ describe('GroupsController', function() {
           })
           .destroy()
           .then(function(){
-            console.log("we have destroyed it--groups");
             done();
           })
           .catch(function(error) {
@@ -64,59 +65,89 @@ describe('GroupsController', function() {
   });
   
   
- //  describe('tests with data', function() {
- //    var user;
+  describe('tests with data', function() {
+    var groups;
 
- //    beforeEach(function(done) {
- //      new User({
- //        full_name: 'test name',
- //        password: 'test password',
- //        email: 'test@email.com2',
- //        bio: 'tell me bout you with data'
- //      })
- //      .save()
- //      .then(function(newUser) {
- //        user = newUser;
- //        done();
- //      });
- //    });
+    beforeEach(function(done) {
+      new Group({
+        name: 'test group title-with data',
+        description: 'group description-withdata',
+        exercise_length: 6,
+        days_per_week: 8,
+        start_date: '2015-12-15',
+        end_date: '2015-12-31'
+      })
+      .save()
+      .then(function(newGroup) {
+        group = newGroup;
+        done();
+      });
+    });
 
- //    afterEach(function(done) {
- //      new User({
- //        id: user.id
- //      }).destroy()
- //        .then(done)
- //        .catch(function(error) {
- //          done.fail(error);
- //        });
- //    });
+    afterEach(function(done) {
+      new Group({
+        id: group.id
+      }).destroy()
+        .then(done)
+        .catch(function(error) {
+          done.fail(error);
+        });
+    });
 
+    //show edit group page
+    it('should load the edit group form', function (done) {
+      request('http://localhost:3000/group/' + group.id + '/edit', function(error, response, body) {
+        expect(response.statusCode).toBe(200);
+        done();
+      });
+    });
+    
+    //update a group
+    it('should update a group', function(done) {
+      var options = {
+        url: 'http://localhost:3000/group/' + group.id + '/update',
+        form: {
+          name: 'updated group title',
+          description: 'updated group description',
+          exercise_length: 10,
+          days_per_week: 12
+        }
+      };
 
- //    //login a user
- //    it('should login a user', function(done) {
- //      var options = {
- //        url: 'http://localhost:3000/login',
- //        form: {
- //          email: 'test@email.com',
- //          password: 'test password'
- //        }
- //      };
+      request.post(options, function(error, response, body) {
+        expect(response.statusCode).toBe(302);
+        new Group({
+          id: group.id
+        })
+        .fetch()
+        .then(function(group) {
+          expect(group.id).toBeDefined();
+          new Group({
+            id: group.id
+          })
+          .destroy();
+          done();
+        });
+      });
+    });
+    
+    //delete a group
+    it('should delete a group', function(done) {
+      var options = {
+        url: 'http://localhost:3000/group/' + group.id + '/delete'
+      };
 
- //      request.post(options, function(error, response, body) {
- //        expect(response.statusCode).toBe(302);
- //        new User({
- //          id: user.id
- //        })
- //        .fetch()
- //        .then(function(user) {
- //          expect(user.id).toBeDefined();
- //          new User({
- //            id: user.id
- //          })
- //          .destroy();
- //          done();
- //        });
- //      });
- //    });
- // });
+      request.post(options, function(error, response, body) {
+        expect(response.statusCode).toBe(302);
+        new Group({
+          id: group.id
+        })
+        .fetch()
+        .then(function(deletedGroup) {
+          expect(deletedGroup).toBeNull();
+          done();
+        });
+      });
+    });
+ });
 });

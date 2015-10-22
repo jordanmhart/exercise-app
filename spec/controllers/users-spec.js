@@ -48,7 +48,6 @@ describe('UsersController', function() {
           })
           .destroy()
           .then(function(){
-            console.log("we have destroyed it");
             done();
           })
           .catch(function(error) {
