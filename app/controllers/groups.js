@@ -12,7 +12,7 @@ exports.index = function(req, res){
 
 //GET
 //renders create jade file in groups view
-exports.creategroup = function (req, res){
+exports.createForm = function (req, res){
 	res.render('groups/create',{
 		title: 'Create New Group'
 	});
@@ -27,8 +27,7 @@ exports.create = function (req, res){
     start_date: req.body.start_date,
     end_date: req.body.end_date,
     exercise_length: req.body.exercise_length,
-    days_per_week: req.body.days_per_week,
-    user_id: req.user.id
+    days_per_week: req.body.days_per_week
   })
   .save()
   .then( function (data) {

@@ -6,8 +6,7 @@ var Users = require('../collections/users');
 
 //encryption
 var bcrypt = require('bcrypt-nodejs'),
-    passport = require('passport'),
-    hash;
+    passport = require('passport');
 
 //GET
 //loads login page -- home page[for now]
@@ -32,7 +31,7 @@ exports.login_form = function (req, res){var users = Users;
 //POST
 //user info for login saved to db --redirect to groups
 exports.login = function (req, res){
-  hash = bcrypt.hashSync(req.body.password);
+  var hash = bcrypt.hashSync(req.body.password);
   User.forge({
     password: hash,
     email: req.body.email
@@ -58,9 +57,10 @@ exports.register = function (req, res){
 //POST
 //user info saved to db when registration is complete
 exports.create = function (req, res){
-  hash = bcrypt.hashSync(req.body.password);
+  var hash = bcrypt.hashSync(req.body.password);
   User.forge({
     full_name: req.body.full_name,
+    nickname: req.body.nickname,
     password: hash,
     email: req.body.email,
     bio: req.body.bio

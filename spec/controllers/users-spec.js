@@ -28,32 +28,39 @@ describe('UsersController', function() {
       var options = {
         url: 'http://localhost:3000/register',
         form: {
-          full_name: 'test name',
+          full_name: 'test full_name',
+          nickname: 'test nickname',
           email: 'test@email.com',
           password: 'test password',
           bio: 'tell me bout you no data'
         }
       };
 
+      console.log('before post');
+
       request.post(options, function(error, response, body) {
         expect(response.statusCode).toBe(302);
+        console.log('before fetch');
         new User({
           email: 'test@email.com'
         })
         .fetch()
-        .then(function(user) {
-          expect(user.id).toBeDefined();
+        .then(function(createdUser) {
+          expect(createdUser.id).toBeDefined();
+          console.log('before forge');
           new User({
-            id: user.id
+            id: createdUser.id
           })
-          .destroy()
-          .then(function(){
-            done();
-          })
-          .catch(function(error) {
-            console.log(error);
-            done.fail(error);
-          });
+          .destroy();
+          console.log('after destroy, user id: ' + createdUser.id);
+
+          // .then(function(){
+          // })
+          // .catch(function(error) {
+          //   console.log(error);
+          //   done.fail(error);
+          // });
+          done();
         });
       });
     });
@@ -65,9 +72,10 @@ describe('UsersController', function() {
 
     beforeEach(function(done) {
       new User({
-        full_name: 'test name',
+        full_name: 'test full_name',
+        nickname: 'test nickname',
         password: 'test password',
-        email: 'test@email.com2',
+        email: 'test@email.com3',
         bio: 'tell me bout you with data'
       })
       .save()
@@ -93,7 +101,7 @@ describe('UsersController', function() {
       var options = {
         url: 'http://localhost:3000/login',
         form: {
-          email: 'test@email.com',
+          email: 'test@email.com3',
           password: 'test password'
         }
       };

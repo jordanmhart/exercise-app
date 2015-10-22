@@ -77,8 +77,8 @@ app.use(passport.session());
 //--------------------------ROUTES--------------------------
 //group routes
 app.get('/groups', GroupsController.index);
-app.get('/creategroup', GroupsController.creategroup);
-app.post('/creategroup', GroupsController.create);
+app.get('/group/create', GroupsController.createForm);
+app.post('/group/create', GroupsController.create);
 app.get('/group/:id/edit',GroupsController.edit);
 app.post('/group/:id/update', GroupsController.update);
 app.post('/group/:id/delete', GroupsController.destroy);

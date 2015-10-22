@@ -17,7 +17,7 @@ describe('GroupsController', function() {
 
     // show create group form
     it('should load the create group form', function (done) {
-      request('http://localhost:3000/creategroup', function(error, response, body) {
+      request('http://localhost:3000/group/create', function(error, response, body) {
         expect(response.statusCode).toBe(200);
         done();
       });
@@ -26,7 +26,7 @@ describe('GroupsController', function() {
     //create new group
     it('should create a new group', function (done) {
       var options = {
-        url: 'http://localhost:3000/creategroup',
+        url: 'http://localhost:3000/group/create',
         form: {
           name: 'test group title',
           description: 'group description',
