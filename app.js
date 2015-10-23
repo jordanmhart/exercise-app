@@ -10,7 +10,8 @@ var express = require('express'),
 
 //controllers
 var GroupsController = require('./app/controllers/groups'),
-  UsersController = require('./app/controllers/users'),
+  UsersController = require('./app/controllers/users')
+  MembershipsController = require('./app/controllers/memberships'),
   ExercisesController = require('./app/controllers/exercises');
 
 //database
@@ -94,6 +95,9 @@ app.post('/login', UsersController.login)
 app.get('/exercises', ExercisesController.index);
 app.post('/exercise/create', ExercisesController.create)
 app.post('/exercise/:id/delete', ExercisesController.destroy);
+
+//membership routes
+app.post('/group/:id/invite', MembershipsController.create);
 
 app.listen(3000);
 console.log('listening on port 3000 and thinking of ice cream');
