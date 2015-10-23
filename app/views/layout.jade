@@ -1,10 +1,78 @@
 doctype html
-html
-    head
-        title= title
-        link(href='/stylesheets/bootstrap.min.css', rel='stylesheet')
-        link(href='/stylesheets/styles.css', rel='stylesheet')
-        script(src='/js/jquery.js')
-        script(src='/js/bootstrap.min.js')
+html(lang='en')
+  head
+    meta(http-equiv='content-type', content='text/html; charset=UTF-8')
+    meta(charset='utf-8')
+    title Exercise App
+    meta(name='generator', content='Bootply')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    //if lt IE 9
+    script(src='//html5shim.googlecode.com/svn/trunk/html5.js')
+    link(href='/stylesheets/bootstrap.min.css', rel='stylesheet')
+    link(href='/stylesheets/styles.css', rel='stylesheet')
+    script(src='/js/jquery.js')
+    script(src='/js/bootstrap.min.js')
     body
-        block content
+      .navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+            a.navbar-brand(rel='home', href='#') Exercise App
+            .collapse.navbar-collapse
+              ul.navbar-nav
+                li.dropdown
+                  a.dropdown-toggle(href='#', data-toggle='dropdown')
+                    | Groups
+                    b.caret
+                    ul.dropdown-menu
+                    li
+                      a(href='#') Action
+                    li
+                      a(href='#') Another Action
+                    li.divider
+                    li
+                      a(href='#') Separated Link
+                    li.divider
+
+
+
+   .navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+      .navbar-header
+        button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+          span.sr-only Toggle navigation
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        a.navbar-brand(rel='home', href='#') Brand
+      .collapse.navbar-collapse
+        ul.nav.navbar-nav
+          li
+            a(href='#') Link
+          li
+            a(href='#') Link
+          li
+            a(href='#') Link
+          li.dropdown
+            a.dropdown-toggle(href='#', data-toggle='dropdown')
+              | Dropdown 
+              b.caret
+            ul.dropdown-menu
+              li
+                a(href='#') Action
+              li
+                a(href='#') Another action
+              li.divider
+              li
+                a(href='#') Separated link
+              li.divider
+              li
+                a(href='#') One more separated link
+        button.btn.btn-default.navbar-btn(type='button') Button
+        .col-sm-3.col-md-3.pull-right
+          .navbar-text Text
+              span.glyphicon.glyphicon-plus
+
+            block content
