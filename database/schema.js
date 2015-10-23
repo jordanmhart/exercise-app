@@ -21,7 +21,7 @@ bookshelf.knex.schema.hasTable('users')
 			user.string('nickname',300).notNullable().defaultTo('');
 			user.string('email', 250).unique().notNullable().defaultTo('');
 			user.string('password', 150).notNullable();
-			user.text('bio', 1000).notNullable().defaultTo('');
+			user.text('bio', 1000).defaultTo('');
 			user.string('photo_url').notNullable().defaultTo('');
 			user.timestamps();
 		})
