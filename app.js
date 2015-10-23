@@ -10,7 +10,8 @@ var express = require('express'),
 
 //controllers
 var GroupsController = require('./app/controllers/groups'),
-  UsersController = require('./app/controllers/users');
+  UsersController = require('./app/controllers/users'),
+  ExercisesController = require('./app/controllers/exercises');
 
 //database
 var bookshelf = require('./database/schema');
@@ -82,13 +83,17 @@ app.post('/group/create', GroupsController.create);
 app.get('/group/:id/edit',GroupsController.edit);
 app.post('/group/:id/update', GroupsController.update);
 app.post('/group/:id/delete', GroupsController.destroy);
+
 //user routes
 app.get('/', UsersController.login_form);
 app.get('/register', UsersController.register);
 app.post('/register', UsersController.create);
 app.post('/login', UsersController.login)
 
-
+//exercise routes
+app.get('/exercises', ExercisesController.index);
+app.post('/exercise/create', ExercisesController.create)
+app.post('/exercise/:id/delete', ExercisesController.destroy);
 
 app.listen(3000);
 console.log('listening on port 3000 and thinking of ice cream');
