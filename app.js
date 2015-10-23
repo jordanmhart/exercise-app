@@ -15,9 +15,19 @@ var User = require('./app/models/user');
 var bookshelf = require('./database/schema');
 
 //passport
-passport.use(new LocalStrategy(function (email, password, done) {
+passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password'
+  },
+  function (email, password, done) {
     new User({email: email}).fetch().then(function (data) {
-        var user = data;
+        var user = data.toJSON();
+        var hash = bcrypt.hashSync(password);
+
+        // password never matches :(
+        console.log(hash);
+        console.log(user.password);
+
         if(user === null) {
             return done(null, false, {message: 'Invalid email or password'});
         } else {
