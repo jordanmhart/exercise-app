@@ -42,7 +42,7 @@ describe('GroupsController', function() {
           name: 'test group title'
         })
         .fetch()
-        .then(function(group) {
+        .then(function (group) {
           expect(group.id).toBeDefined();
           new Group({
             id: group.id

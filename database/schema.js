@@ -60,10 +60,10 @@ bookshelf.knex.schema.hasTable('exercises')
 		bookshelf.knex.schema.createTable('exercises', function (exercise){
 			exercise.increments('id').primary();
 			exercise.string('title', 150);
-			exercise.text('description', 2000).unique().notNullable().defaultTo('');
+			exercise.text('description', 2000).defaultTo('');
 			exercise.date('date');
-			exercise.dateTime('start_time');
-			exercise.dateTime('end_time');
+			// exercise.time('start_time');
+			// exercise.time('end_time');
 			exercise.integer('user_id',255);
 			exercise.timestamps();
 		})

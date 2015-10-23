@@ -7,27 +7,29 @@ describe('ExercisesController', function() {
 
   describe('tests without data', function() {
     
-    //create new exercise
-    it('should create a new exercise', function (done) {
+    //create new exercise log
+    it('should create a new exercise log', function (done) {
       var options = {
-        url: 'http://localhost:3000/createexercise',
+        url: 'http://localhost:3000/exercise/create',
         form: {
-          name: 'test exercise title',
-          description: 'exercise description',
-          exercise_length: 5,
-          days_per_week: 7,
-          start_date: '2015-12-15',
-          end_date: '2015-12-31'
+          title: 'test title without data',
+          description: 'test description',
+          date:'2015-12-25',
+          user_id: 1
         }
       };
+      console.log('before post');
+      console.log(options + 'this is options');
+
       request.post(options, function (error, response, body) {
         expect(response.statusCode).toBe(302);
         new Exercise({
-          name: 'test exercise title'
+          title: 'test title without data'
         })
         .fetch()
-        .then(function(exercise) {
-          expect(exercise.id).toBeDefined();
+        .then(function (exercise) {
+          console.log(exercise);
+          expect(exercise.get('id')).toBeDefined();
           new Exercise({
             id: exercise.id
           })
@@ -48,18 +50,15 @@ describe('ExercisesController', function() {
     });
   });
   
-  
-  describe('tests with data', function() {
-    var exercises;
 
+  describe('tests with data', function() {
+    var exercise;
     beforeEach(function(done) {
       new Exercise({
-        name: 'test exercise title-with data',
-        description: 'exercise description-withdata',
-        exercise_length: 6,
-        days_per_week: 8,
-        start_date: '2015-12-15',
-        end_date: '2015-12-31'
+        title: 'test title with data',
+        description: 'test description with data',
+        date:'2015-12-25',
+        user_id: 1
       })
       .save()
       .then(function(newExercise) {
