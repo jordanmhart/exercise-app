@@ -12,27 +12,28 @@ var bcrypt = require('bcrypt-nodejs'),
 //Login
 exports.login = function(req, res, next) {
 
-    passport.authenticate(
-        'local',
-        {failureRedirect: '/register'},
-        function(err, user, info) {
+  passport.authenticate(
+    'local',
+    {failureRedirect: '/register'},
+    function(err, user, info) {
 
-            if(err) {
-                res.render('/', {title: 'Sign In', errorMessage: err.message});
-            }
+      // if(err) {
+      //     res.render('index', {title: 'Sign In', errorMessage: err.message});
+      // }
 
-            if(!user) {
-                res.render('/', {title: 'Sign In', errorMessage: info.message});
-            }
+      // if(!user) {
+      //     res.render('index', {title: 'Sign In', errorMessage: info.message});
+      // }
 
-            req.logIn(user, function(err) {
-              if(err) {
-                res.render('/', {title: 'Sign In', errorMessage: err.message});
-              } else {
-                res.redirect('/groups');
-              }
-            });
-        })(req, res, next);
+      req.logIn(user, function(err) {
+        if(err) {
+          res.render('index', {title: 'Sign In', errorMessage: err.message});
+        } else {
+          res.redirect('/groups');
+        }
+      });
+    }
+  )(req, res, next);
 };
 
 exports.logout = function(req, res, next) {
@@ -55,21 +56,21 @@ exports.login_form = function (req, res){
 }
 
 //POST
-exports.login = function (req, res){
-  var hash = bcrypt.hashSync(req.body.password);
-  User.forge({
-    password: hash,
-    email: req.body.email
-  })
-  .fetch()
-  .then( function (data) {
-    req.method = 'get';
-    res.redirect('/groups');
-  })
-  .catch(function (error) {
-    console.log("errorrrrrr" + error.stack)
-  })
-}
+// exports.login = function (req, res){
+//   var hash = bcrypt.hashSync(req.body.password);
+//   User.forge({
+//     password: hash,
+//     email: req.body.email
+//   })
+//   .fetch()
+//   .then( function (data) {
+//     req.method = 'get';
+//     res.redirect('/groups');
+//   })
+//   .catch(function (error) {
+//     console.log("errorrrrrr" + error.stack)
+//   })
+// }
 
 //GET
 //gets user's register view file 
@@ -93,7 +94,7 @@ exports.create = function (req, res){
   .save()
   .then( function (data) {
     req.method = 'get';
-    res.redirect('/groups');
+    res.redirect('/');
   })
   .catch(function (error) {
     console.log("errorrrrrr" + error.stack)

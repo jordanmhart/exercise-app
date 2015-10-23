@@ -1,80 +1,69 @@
 var express = require('express'),
-  app = express(),
-  path = require('path'),
-  bodyParser = require('body-parser'),
-  cookieParser = require('cookie-parser'),
-  passport = require('passport'),
-  bcrypt = require('bcrypt-nodejs'),
-  session = require('express-session'),
-  LocalStrategy = require('passport-local').Strategy;
+    app = express(),
+    router = express.Router(),
+    path = require('path'),
+    bodyParser = require('body-parser'),
+    cookieParser = require('cookie-parser'),
+    passport = require('passport'),
+    bcrypt = require('bcrypt-nodejs'),
+    session = require('express-session'),
+    LocalStrategy = require('passport-local').Strategy;
+
+var User = require('./app/models/user');
+
+//database
+var bookshelf = require('./database/schema');
+
+//passport
+passport.use(new LocalStrategy(function (email, password, done) {
+    new User({email: email}).fetch().then(function (data) {
+        var user = data;
+        if(user === null) {
+            return done(null, false, {message: 'Invalid email or password'});
+        } else {
+            user = data.toJSON();
+            if(!bcrypt.compareSync(password, user.password)) {
+                return done(null, false, {message: 'Invalid email or password'});
+            } else {
+                return done(null, user);
+            }
+        }
+    });
+}));
+
+passport.serializeUser(function (user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function (email, done) {
+    new User({email: email}).fetch().then(function(user) {
+        done(null, user);
+    });
+});
+
+//view engine setup
+app.set('views', path.join(__dirname, 'app/views'));
+app.set('view engine', 'jade');
+
+//Passport, Sessions, Login
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded( {
+    extended: true
+}));
+app.use(cookieParser());
+// app.use(session({strategic: 'strategic code'}));
+app.use(session({secret: 'secret strategic duck code', resave: true, saveUninitialized: true}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+//setting up public folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 //controllers
 var GroupsController = require('./app/controllers/groups'),
   UsersController = require('./app/controllers/users')
   MembershipsController = require('./app/controllers/memberships'),
   ExercisesController = require('./app/controllers/exercises');
-
-//database
-var bookshelf = require('./database/schema');
-
-//setting up public folder
-app.use(express.static(path.join(__dirname, 'public')));
-
-//all env
-app.set('port', process.env.PORT || 3000);
-
-//view engine
-app.set('views', path.join(__dirname, 'app/views'));
-app.set('view engine', 'jade');
-
-//passport
-//user authentication
-var User = ('./models/user');
-
-//bcrypt encryption--ASK KIRK IF this should move?
-passport.use(new LocalStrategy(function (email, password, done) {
-   new User({email: email}).fetch()
-   .then(function (data) {
-      var user = data;
-      // req.session.user = user;
-      if(user === null) {
-         return done(null, false, {message: 'Invalid email'});
-      } else {
-         user = data.toJSON();
-         if(!bcrypt.compareSync(password, user.password)) {
-            return done(null, false, {message: 'Invalid password'});
-         } else {
-            return done(null, user);
-         }
-      }
-   });
-}));
-
-//serialize user
-passport.serializeUser(function(user, done) {
-  done(null, user.email);
-});
-
-passport.deserializeUser(function(email, done) {
-  new User({email: email}).fetch()
-  .then(function (user) {
-  done(null, user.email);
- });
-});
-
-//view engine
-app.set('views', path.join(__dirname, 'app/views'));
-app.set('view engine', 'jade');
-
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true }));
-app.use('/public', express.static(path.join(__dirname, 'public')));
-app.use(cookieParser());
-app.use(session({secret: 'keyboard cat', resave: true, saveUninitialized: true}));
-app.use(passport.initialize());
-app.use(passport.session());
-
 
 //--------------------------ROUTES--------------------------
 //group routes

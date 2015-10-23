@@ -2,6 +2,7 @@ extends layout
 
 block content
     p.lead Log In
+        p #{errorMessage}
         br
         form(role='form', action="/login",method="post", style='max-width: 500px;')
             .form-group
