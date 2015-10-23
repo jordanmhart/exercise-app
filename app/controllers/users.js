@@ -46,22 +46,12 @@ exports.logout = function(req, res, next) {
 
 //GET
 //loads login page -- home page[for now]
-exports.login_form = function (req, res){var users = Users;
-  users.fetch()
-  .then(function (data){
-    if(!req.isAuthenticated()){
-      res.render('index');
-    } else {
-      var user = req.user;
-      if(user !== undefined) {
-        user = user.toJSON();
-      }
-      res.redirect('/groups');
-    }
-  })
-  .catch(function (error) {
-      console.log("errorrrrrr" + error.stack)
-  })
+exports.login_form = function (req, res){
+  if(!req.isAuthenticated()){
+    res.render('index');
+  } else {
+    res.redirect('/groups');
+  }  
 }
 
 //POST

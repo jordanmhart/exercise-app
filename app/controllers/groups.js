@@ -7,7 +7,10 @@ var Groups = require('../collections/groups');
 //GET
 //loads index page of groups -- list of groups
 exports.index = function(req, res){
-	res.render('groups/index');
+    console.log(req.user);
+	res.render('groups/index', {
+        user: req.user.email
+    });
 }
 
 //GET

@@ -3,9 +3,9 @@ var express = require('express'),
   path = require('path'),
   bodyParser = require('body-parser'),
   cookieParser = require('cookie-parser'),
-  session = require('express-session'),
   passport = require('passport'),
   bcrypt = require('bcrypt-nodejs'),
+  session = require('express-session'),
   LocalStrategy = require('passport-local').Strategy;
 
 //controllers
@@ -32,13 +32,13 @@ app.set('view engine', 'jade');
 var User = ('./models/user');
 
 //bcrypt encryption--ASK KIRK IF this should move?
-passport.use(new LocalStrategy(function (username, password, done) {
-   new User({username: username}).fetch()
+passport.use(new LocalStrategy(function (email, password, done) {
+   new User({email: email}).fetch()
    .then(function (data) {
       var user = data;
       // req.session.user = user;
       if(user === null) {
-         return done(null, false, {message: 'Invalid username'});
+         return done(null, false, {message: 'Invalid email'});
       } else {
          user = data.toJSON();
          if(!bcrypt.compareSync(password, user.password)) {
@@ -52,13 +52,13 @@ passport.use(new LocalStrategy(function (username, password, done) {
 
 //serialize user
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+  done(null, user.email);
 });
 
-passport.deserializeUser(function(id, done) {
-  new User({id: id}).fetch()
+passport.deserializeUser(function(email, done) {
+  new User({email: email}).fetch()
   .then(function (user) {
-  done(null, user.id);
+  done(null, user.email);
  });
 });
 
