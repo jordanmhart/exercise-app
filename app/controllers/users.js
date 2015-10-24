@@ -5,8 +5,8 @@ var User = require('../models/user');
 var Users = require('../collections/users');
 
 //encryption
-var bcrypt = require('bcrypt-nodejs'),
-    passport = require('passport');
+var passport = require('passport');
+var bcrypt = require('bcrypt-nodejs');
 
 //POST
 //Login
@@ -88,7 +88,7 @@ exports.create = function (req, res){
     full_name: req.body.full_name,
     nickname: req.body.nickname,
     password: hash,
-    email: req.body.email,
+    username: req.body.username,
     bio: req.body.bio
   })
   .save()

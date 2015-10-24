@@ -15,25 +15,17 @@ var User = require('./app/models/user');
 var bookshelf = require('./database/schema');
 
 //passport
-passport.use(new LocalStrategy({
-    usernameField: 'email',
-    passwordField: 'password'
-  },
-  function (email, password, done) {
-    new User({email: email}).fetch().then(function (data) {
-        var user = data.toJSON();
-        var hash = bcrypt.hashSync(password);
-
-        // password never matches :(
-        console.log(hash);
-        console.log(user.password);
+passport.use(new LocalStrategy(
+  function (username, password, done) {
+    new User({username: username}).fetch().then(function (data) {
+        var user = data;
 
         if(user === null) {
-            return done(null, false, {message: 'Invalid email or password'});
+            return done(null, false, {message: 'Invalid username or password'});
         } else {
             user = data.toJSON();
             if(!bcrypt.compareSync(password, user.password)) {
-                return done(null, false, {message: 'Invalid email or password'});
+                return done(null, false, {message: 'Invalid username or password'});
             } else {
                 return done(null, user);
             }
@@ -42,11 +34,11 @@ passport.use(new LocalStrategy({
 }));
 
 passport.serializeUser(function (user, done) {
-    done(null, user);
+    done(null, user.username);
 });
 
-passport.deserializeUser(function (email, done) {
-    new User({email: email}).fetch().then(function(user) {
+passport.deserializeUser(function (username, done) {
+    new User({username: username}).fetch().then(function(user) {
         done(null, user);
     });
 });
@@ -66,14 +58,14 @@ app.use(session({secret: 'secret strategic duck code', resave: true, saveUniniti
 app.use(passport.initialize());
 app.use(passport.session());
 
-//setting up public folder
-app.use(express.static(path.join(__dirname, 'public')));
-
 //controllers
 var GroupsController = require('./app/controllers/groups'),
   UsersController = require('./app/controllers/users')
   MembershipsController = require('./app/controllers/memberships'),
   ExercisesController = require('./app/controllers/exercises');
+
+//setting up public folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 //--------------------------ROUTES--------------------------
 //group routes

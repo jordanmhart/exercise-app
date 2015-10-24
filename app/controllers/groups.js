@@ -9,7 +9,7 @@ var Groups = require('../collections/groups');
 exports.index = function(req, res){
     console.log(req.user);
 	res.render('groups/index', {
-        user: req.user.email
+        user: req.user.username
     });
 }
 
