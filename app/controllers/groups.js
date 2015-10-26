@@ -6,12 +6,18 @@ var Groups = require('../collections/groups');
 
 //GET
 //loads index page of groups -- list of groups
-exports.index = function(req, res){
-    console.log(req.user);
-	res.render('groups/index', {
-        user: req.user.email
-    });
-}
+exports.index = function(req, res){    
+  Groups.fetch()
+  .then(function (data){
+    res.render('groups/index',{
+    title: 'My Groups',
+    data: data.toJSON()
+    })
+  })
+  .catch(function (error) {
+    console.log("errorrrrrr" + error.stack)
+  })
+  }
 
 //GET
 //renders create jade file in groups view
@@ -33,13 +39,45 @@ exports.create = function (req, res){
     days_per_week: req.body.days_per_week
   })
   .save()
-  .then( function (data) {
+  .then(function (data) {
     req.method = 'get';
     res.redirect('/groups');
   })
   .catch(function (error) {
     console.log("errorrrrrr" + error.stack)
 
+  })
+}
+
+//GET
+//when clicked, views a single group
+exports.gView = function (req, res){
+  var id = req.params.id;
+  console.log(id);
+  Group.forge({id: id})
+  .fetch()
+  .then(function (data){
+    console.log('data:' + data)
+    res.render('groups/show', {
+      data: data.toJSON()
+    })
+  })
+  .catch(function (error){
+    console.log("errorrrrrrGView" + error.stack)
+  })
+}
+//POST
+//shows single group on the groups page
+exports.gViewPost = function (req, res){
+  var id = req.params.id;
+  Groups.fetch()
+  .then(function (data){
+    res.render('groups/show', {
+      data: data.toJSON()
+    })
+  })
+  .catch(function (error){
+    console.log("errorrrrrrGViewPost" + error.stack)
   })
 }
 

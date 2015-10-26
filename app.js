@@ -15,16 +15,24 @@ var User = require('./app/models/user');
 var bookshelf = require('./database/schema');
 
 //passport
-passport.use(new LocalStrategy(function (email, password, done) {
-    new User({email: email}).fetch().then(function (data) {
+passport.use(new LocalStrategy(function (username, password, done) {
+    console.log('LocalStrategy email: ' + username);
+
+    new User({email: username}).fetch().then(function (data) {
         var user = data;
+        console.log('LocalStrategy user: ' + data.toJSON());
         if(user === null) {
             return done(null, false, {message: 'Invalid email or password'});
         } else {
-            user = data.toJSON();
-            if(!bcrypt.compareSync(password, user.password)) {
+            console.log('LocalStrategy password: ' + password);
+            var hash = bcrypt.hashSync(password);
+            console.log('hash:' + hash);
+            console.log(user.get('password'));
+            // user = data.toJSON();
+            if(!bcrypt.compareSync(password, user.get('password'))) {
                 return done(null, false, {message: 'Invalid email or password'});
             } else {
+                console.log('password matched')
                 return done(null, user);
             }
         }
@@ -32,7 +40,8 @@ passport.use(new LocalStrategy(function (email, password, done) {
 }));
 
 passport.serializeUser(function (user, done) {
-    done(null, user);
+    console.log("passport.serializeUser: " + user);
+    done(null, user.get('email'));
 });
 
 passport.deserializeUser(function (email, done) {
@@ -73,6 +82,8 @@ app.post('/group/create', GroupsController.create);
 app.get('/group/:id/edit',GroupsController.edit);
 app.post('/group/:id/update', GroupsController.update);
 app.post('/group/:id/delete', GroupsController.destroy);
+app.get('/groups/:id',GroupsController.gView)
+app.post('/groups/:id',GroupsController.gViewPost)
 
 //user routes
 app.get('/', UsersController.login_form);

@@ -11,7 +11,8 @@ var bcrypt = require('bcrypt-nodejs'),
 //POST
 //Login
 exports.login = function(req, res, next) {
-
+  console.log('login route');
+  console.log(req.user);
   passport.authenticate(
     'local',
     {failureRedirect: '/register'},
@@ -83,7 +84,9 @@ exports.register = function (req, res){
 //POST
 //user info saved to db when registration is complete
 exports.create = function (req, res){
+  console.log('req password:' + req.body.password);
   var hash = bcrypt.hashSync(req.body.password);
+  console.log('new user hash: ' + hash);
   User.forge({
     full_name: req.body.full_name,
     nickname: req.body.nickname,

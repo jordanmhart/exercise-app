@@ -1,5 +1,15 @@
 extends ../layout 
 
 block content
-    h1 Your Groups
-    h2 User Name: #{user.id}
+  h1 Your Groups
+  a(href='/group/create') Create Group
+
+  h2 Groups
+  hr
+  each val in data
+    p
+    .summary
+      a(href='/groups/#{val.id}')
+        button#group-info-submit.btn.btn-default
+          .group-name #{val.name} Title
+          .group-description #{val.description}
