@@ -66,14 +66,12 @@ describe('GroupsController', function() {
   
   
   describe('tests with data', function() {
-    var groups;
+    var group;
 
     beforeEach(function(done) {
       new Group({
         name: 'test group title-with data',
         description: 'group description-withdata',
-        exercise_length: 6,
-        days_per_week: 8,
         start_date: '2015-12-15',
         end_date: '2015-12-31'
       })
@@ -95,9 +93,12 @@ describe('GroupsController', function() {
     });
 
     //show group page
+    //TODO: Ask Kirk how to test for users and exercises to be defined
     it('should load the group page', function (done) {
       request('http://localhost:3000/group/' + group.id, function(error, response, body) {
         expect(response.statusCode).toBe(200);
+        // expect(data.users).toBeDefined();
+        // expect(data.users.exercises).toBeDefined();
         done();
       });
     });
@@ -118,8 +119,8 @@ describe('GroupsController', function() {
         form: {
           name: 'updated group title',
           description: 'updated group description',
-          exercise_length: 10,
-          days_per_week: 12
+          start_date: '2015-12-15',
+          end_date: '2015-12-31'
         }
       };
 

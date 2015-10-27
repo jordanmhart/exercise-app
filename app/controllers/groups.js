@@ -84,9 +84,7 @@ exports.update = function (req, res){
     .then(function (group){
         group.save({
             name: req.body.name,
-            description: req.body.description,
-            exercise_length: req.body.exercise_length,
-            days_per_week: req.body.days_per_week
+            description: req.body.description
         })
         .then(function (data){
             req.method = 'get';

@@ -1,4 +1,14 @@
 extends ../layout 
 
 block content
-    p show user page
+    h1 #{data.full_name}
+    ul Exercises
+        each val in data.exercises
+            li
+                span #{val.date} 
+                form(method='post', action='/exercise/#{group_id}/delete/#{val.id}')
+                    button(type='submit').btn.btn-default Delete
+
+    p
+      a(href='/group/#{group_id}')
+        button.update-button Return to Group

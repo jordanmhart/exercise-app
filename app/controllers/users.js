@@ -1,9 +1,10 @@
 //models
 var User = require('../models/user');
+  // Exercise = require('../models/exercise');
 
 //collections
 var Users = require('../collections/users');
-
+  // Exercises = require('../collections/exercises');
 //encryption
 var bcrypt = require('bcrypt-nodejs'),
     passport = require('passport');
@@ -34,6 +35,25 @@ exports.login = function(req, res, next) {
     }
   )(req, res, next);
 };
+//GET
+exports.show = function (req, res, next) {
+  User.forge({
+    id: req.params.user_id
+  })
+  .fetch({
+    withRelated: ['exercises']
+  })
+  .then( function(data){
+    res.render('users/show', {
+      title: 'Exercise Log',
+      group_id: req.params.group_id,
+      data: data.toJSON()
+    })
+  })
+  .catch(function (error) {
+    console.log("errorrrrrr" + error.stack)
+  })
+}
 
 exports.logout = function(req, res, next) {
    if(!req.isAuthenticated()) {
@@ -80,7 +100,6 @@ exports.create = function (req, res){
   })
   .catch(function (error) {
     console.log("errorrrrrr" + error.stack)
-
   })
 }
 

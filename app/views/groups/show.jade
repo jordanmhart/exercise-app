@@ -10,9 +10,21 @@ block content
       .group-startdate #{data.start_date} Start Date
       .group-description #{data.end_date} End Date
   p
-    each val in data.users
-      ul Users
-        li #{val.initials}
+    form(method='post', action='/exercise/#{data.id}/create/2015-10-26')
+        button(type='submit').btn.btn-default Monday
+    form(method='post', action='/exercise/#{data.id}/create/2015-10-27')
+        button(type='submit').btn.btn-default Tuesday
+    form(method='post', action='/exercise/#{data.id}/create/2015-10-28')
+        button(type='submit').btn.btn-default Wednesday
+    form(method='post', action='/exercise/#{data.id}/create/2015-10-29')
+        button(type='submit').btn.btn-default Thursday
+    form(method='post', action='/exercise/#{data.id}/create/2015-10-30')
+        button(type='submit').btn.btn-default Friday
+  p
+    ul Users
+      each val in data.users
+        a(href='/group/#{data.id}/user/#{val.id}')
+          li #{val.initials}
   p
     a(href='/groups')
       button.update-button Return to Groups List

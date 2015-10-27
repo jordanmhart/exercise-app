@@ -70,15 +70,16 @@ var GroupsController = require('./app/controllers/groups'),
 app.get('/groups', GroupsController.index);
 app.get('/group/create', GroupsController.createForm);
 app.post('/group/create', GroupsController.create);
-app.get('/group/:id/edit',GroupsController.edit);
+app.get('/group/:id/edit', GroupsController.edit);
 app.post('/group/:id/update', GroupsController.update);
 app.post('/group/:id/delete', GroupsController.destroy);
-app.get('/group/:id',GroupsController.show);
+app.get('/group/:id', GroupsController.show);
 
 
 //user routes
 app.get('/', UsersController.login_form);
 app.get('/register', UsersController.register);
+app.get('/group/:group_id/user/:user_id', UsersController.show)
 app.post('/register', UsersController.create);
 app.post('/login', UsersController.login);
 app.post('/logout', UsersController.logout);

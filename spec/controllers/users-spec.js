@@ -113,7 +113,13 @@ describe('UsersController', function() {
         });
       });
     });
-
+    //TODO: refactor to make group id and user id dynamic
+    it('should load user exercise log', function (done) {
+      request('http://localhost:3000/group/1/user/18', function(error, response, body) {
+        expect(response.statusCode).toBe(200);
+        done();
+      });
+    });
 
   //   // //list users questions
   //   // it('should list a users questions', function(done) {

@@ -8,9 +8,10 @@ describe('ExercisesController', function() {
   describe('tests without data', function() {
     
     //create new exercise log
+    //TODO: move to with data and create test
     it('should create a new exercise log', function (done) {
       var options = {
-        url: 'http://localhost:3000/exercise/create',
+        url: 'http://localhost:3000/exercise/1/create/2015-10-20',
         form: {
           date:'2015-12-25',
           'req.user.id': 1

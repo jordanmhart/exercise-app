@@ -3,7 +3,6 @@ var Exercise = require('../models/exercise');
 var User = require('../models/user')
 //collections
 var Exercises = require('../collections/exercises');
-
 //POST
 //create exercise page
 exports.create = function (req, res){
@@ -18,7 +17,7 @@ exports.create = function (req, res){
   .save()
   .then( function (data) {
     req.method = 'get';
-    res.redirect('/groups/' + group_id);
+    res.redirect('/group/' + group_id);
   })
   .catch(function (error) {
     console.log("errorrrrrr" + error.stack)
@@ -36,7 +35,7 @@ exports.destroy = function (req, res){
     .destroy()
     .then(function (exercise){
         req.method = 'get';
-        res.redirect('/groups/' + group_id);
+        res.redirect('/group/' + group_id);
     })
     .catch(function (error) {
     console.log("errorrrrrr" + error.stack)
