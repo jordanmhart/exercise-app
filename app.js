@@ -81,6 +81,7 @@ app.get('/', UsersController.login_form);
 app.get('/register', UsersController.register);
 app.post('/register', UsersController.create);
 app.post('/login', UsersController.login);
+app.post('/logout', UsersController.logout);
 
 //exercise routes
 app.post('/exercise/:group_id/create/:date', ExercisesController.create);

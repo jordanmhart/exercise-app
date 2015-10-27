@@ -7,4 +7,9 @@ html
         script(src='/js/jquery.js')
         script(src='/js/bootstrap.min.js')
     body
+        .nav 
+            a(href='/') Home 
+            a(href='/groups') My Groups 
+            form(method='post', action='/logout')
+                button(type='submit').btn.btn-default Logout
         block content

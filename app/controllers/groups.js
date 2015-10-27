@@ -53,7 +53,9 @@ exports.create = function (req, res){
 exports.show = function (req, res){
   var id = req.params.id;
   Group.forge({id: id})
-  .fetch()
+  .fetch({
+    withRelated: ['users']
+  })
   .then(function (data){
     res.render('groups/show', {
       data: data.toJSON()

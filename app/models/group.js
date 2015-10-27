@@ -1,5 +1,6 @@
 var bookshelf = require('../../database/schema');
-
+var User = require('./user');
+var Membership = require('./membership');
 // var Group = bookshelf.Model.extend({
 //     users: function(){
 //         return this.belongsToMany(User)
@@ -12,7 +13,7 @@ var Group = bookshelf.Model.extend({
 	hasTimestamps: true,
 	users: function(){
 		return this.belongsToMany(User)
-		.through(membership)
+		.through(Membership)
 		.withPivot(['membership']);
 	}
 });
