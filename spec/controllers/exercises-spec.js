@@ -12,23 +12,18 @@ describe('ExercisesController', function() {
       var options = {
         url: 'http://localhost:3000/exercise/create',
         form: {
-          title: 'test title without data',
-          description: 'test description',
           date:'2015-12-25',
-          user_id: 1
+          'req.user.id': 1
         }
       };
-      console.log('before post');
-      console.log(options + 'this is options');
 
       request.post(options, function (error, response, body) {
         expect(response.statusCode).toBe(302);
         new Exercise({
-          title: 'test title without data'
+          date:'2015-12-25'
         })
         .fetch()
         .then(function (exercise) {
-          console.log(exercise);
           expect(exercise.get('id')).toBeDefined();
           new Exercise({
             id: exercise.id
@@ -80,7 +75,7 @@ describe('ExercisesController', function() {
     //delete a exercise
     it('should delete a exercise', function(done) {
       var options = {
-        url: 'http://localhost:3000/exercise/' + exercise.id + '/delete'
+        url: 'http://localhost:3000/exercise/1/delete/' + exercise.id
       };
 
       request.post(options, function(error, response, body) {

@@ -29,7 +29,7 @@ describe('UsersController', function() {
         url: 'http://localhost:3000/register',
         form: {
           full_name: 'test full_name',
-          nickname: 'test nickname',
+          initials: 'test',
           email: 'test@email.com',
           password: 'test password',
           bio: 'tell me bout you no data'
@@ -62,7 +62,7 @@ describe('UsersController', function() {
     beforeEach(function(done) {
       new User({
         full_name: 'test full_name',
-        nickname: 'test nickname',
+        initials: 'test',
         password: 'test password',
         email: 'test@email.com2',
         bio: 'tell me bout you with data'
@@ -86,6 +86,8 @@ describe('UsersController', function() {
 
 
     //login a user
+    //TODO: ask Kirk why we get an error, which leads to rendering the index
+    //instead of /groups
     it('should login a user', function(done) {
       var options = {
         url: 'http://localhost:3000/login',

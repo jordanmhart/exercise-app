@@ -4,13 +4,23 @@ block content
   h1 Group
   hr
   p
-  .summary
-    .group-name #{data.name} Title
-    .group-description #{data.description}
-    .group-startdate #{data.start_date} Start Date
-    .group-description #{data.end_date} End Date
-    .group-dpw #{data.days_per_week} Days Per Week
-    .group-el #{data.exercise_length} Exercise Length:
+    .summary
+      .group-name #{data.name} Title
+      .group-description #{data.description}
+      .group-startdate #{data.start_date} Start Date
+      .group-description #{data.end_date} End Date
   p
-  a(href='/groups')
-    button.update-button Return to Groups List
+    each val in data.users
+      ul Users
+        li #{val.initials}
+  p
+    a(href='/groups')
+      button.update-button Return to Groups List
+  p
+    p invite your friends
+    form(role='form', method='post', action='/group/#{data.id}/invite') 
+      .form-group
+        input.form-control(type='text', name='user_id', placeholder='Enter user ID')  
+      .form-group
+        input.form-control(type='text', name='membership', placeholder='Enter their role')  
+      button(type='submit').btn.btn-default#group-invite-submit Submit

@@ -94,7 +94,15 @@ describe('GroupsController', function() {
         });
     });
 
-    //show edit group page
+    //show group page
+    it('should load the group page', function (done) {
+      request('http://localhost:3000/group/' + group.id, function(error, response, body) {
+        expect(response.statusCode).toBe(200);
+        done();
+      });
+    });
+
+    //show edit group form
     it('should load the edit group form', function (done) {
       request('http://localhost:3000/group/' + group.id + '/edit', function(error, response, body) {
         expect(response.statusCode).toBe(200);
@@ -102,6 +110,7 @@ describe('GroupsController', function() {
       });
     });
     
+
     //update a group
     it('should update a group', function(done) {
       var options = {

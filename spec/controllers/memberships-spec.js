@@ -13,15 +13,14 @@ describe('MembershipsController', function() {
         url: 'http://localhost:3000/group/1/invite',
         form: {
           user_id: 1,
-          membership: 'potato',
-          invite_accepted: false
+          membership: 'invitee'
         }
       };
 
       request.post(options, function (error, response, body) {
         expect(response.statusCode).toBe(302);
         new Membership({
-          membership: 'potato'
+          membership: 'invitee'
         })
         .fetch()
         .then(function (membership) {

@@ -34,9 +34,9 @@ exports.create = function (req, res){
     name: req.body.name,
     description: req.body.description,
     start_date: req.body.start_date,
-    end_date: req.body.end_date,
-    exercise_length: req.body.exercise_length,
-    days_per_week: req.body.days_per_week
+    end_date: req.body.end_date
+    // exercise_length: req.body.exercise_length,
+    // days_per_week: req.body.days_per_week
   })
   .save()
   .then(function (data) {
@@ -44,20 +44,17 @@ exports.create = function (req, res){
     res.redirect('/groups');
   })
   .catch(function (error) {
-    console.log("errorrrrrr" + error.stack)
-
+    console.log("errorrrrrr" + error.stack);
   })
 }
 
 //GET
 //when clicked, views a single group
-exports.gView = function (req, res){
+exports.show = function (req, res){
   var id = req.params.id;
-  console.log(id);
   Group.forge({id: id})
   .fetch()
   .then(function (data){
-    console.log('data:' + data)
     res.render('groups/show', {
       data: data.toJSON()
     })
@@ -66,20 +63,7 @@ exports.gView = function (req, res){
     console.log("errorrrrrrGView" + error.stack)
   })
 }
-//POST
-//shows single group on the groups page
-exports.gViewPost = function (req, res){
-  var id = req.params.id;
-  Groups.fetch()
-  .then(function (data){
-    res.render('groups/show', {
-      data: data.toJSON()
-    })
-  })
-  .catch(function (error){
-    console.log("errorrrrrrGViewPost" + error.stack)
-  })
-}
+
 
 //GET
 //renders the edit group page 

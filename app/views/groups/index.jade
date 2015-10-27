@@ -8,8 +8,8 @@ block content
   hr
   each val in data
     p
-    .summary
-      a(href='/groups/#{val.id}')
-        button#group-info-submit.btn.btn-default
-          .group-name #{val.name} Title
-          .group-description #{val.description}
+    a(href='/group/#{val.id}')
+      button#group-info-submit.btn.btn-default
+        .group-name #{val.name} Title
+        .group-description #{val.description}
+  

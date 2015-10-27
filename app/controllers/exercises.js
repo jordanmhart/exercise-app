@@ -4,24 +4,21 @@ var User = require('../models/user')
 //collections
 var Exercises = require('../collections/exercises');
 
-//GET
-exports.index = function(req, res){
-  res.render('exercises/index');
-}
 //POST
 //create exercise page
 exports.create = function (req, res){
-  var id = req.params.id,
-    user_id = User.id;
+  var group_id = req.params.group_id;
+  var date = req.params.date;
+  var user_id = req.user.id;
+
   Exercise.forge({
-    title: req.body.title,
-    date: req.body.date,
+    date: date,
     user_id: user_id
   })
   .save()
   .then( function (data) {
     req.method = 'get';
-    res.redirect('/exercises');
+    res.redirect('/groups/' + group_id);
   })
   .catch(function (error) {
     console.log("errorrrrrr" + error.stack)
@@ -32,12 +29,14 @@ exports.create = function (req, res){
 //POST
 //deletes exercise by exercise id
 exports.destroy = function (req, res){
+    var group_id = req.params.group_id;
     var id = req.params.id;
+
     Exercise.forge({id: id})
     .destroy()
     .then(function (exercise){
         req.method = 'get';
-        res.redirect('/exercises');
+        res.redirect('/groups/' + group_id);
     })
     .catch(function (error) {
     console.log("errorrrrrr" + error.stack)

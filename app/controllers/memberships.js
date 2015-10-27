@@ -28,8 +28,7 @@ exports.create = function (req, res){
   Membership.forge({
     user_id: user_id,
     group_id: group_id,
-    membership: req.body.membership,
-    invite_accepted: req.body.invite_accepted
+    membership: req.body.membership
   })
   .save()
   .then( function (data) {

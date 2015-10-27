@@ -17,12 +17,12 @@ bookshelf.knex.schema.hasTable('users')
 	if(!exists){
 		bookshelf.knex.schema.createTable('users', function (user){
 			user.increments('id').primary();
-			user.string('full_name', 300).notNullable().defaultTo('');
-			user.string('nickname',300).notNullable().defaultTo('');
-			user.string('email', 250).unique().notNullable().defaultTo('');
+			user.string('full_name', 300);
+			user.string('initials', 4).notNullable();
+			user.string('email', 250).unique().notNullable();
 			user.string('password', 150).notNullable();
-			user.text('bio', 1000).defaultTo('');
-			user.string('photo_url').notNullable().defaultTo('');
+			user.text('bio', 1000);
+			user.string('photo_url');
 			user.timestamps();
 		})
 		.then(function (table){
@@ -38,13 +38,13 @@ bookshelf.knex.schema.hasTable('groups')
 	if(!exists){
 		bookshelf.knex.schema.createTable('groups', function (group){
 			group.increments('id').primary();
-			group.string('name',150).unique().notNullable();
-			group.text('description', 2000).unique().notNullable().defaultTo('');
-			group.string('stage',150).unique().notNullable().defaultTo('draft');
-			group.date('start_date').unique().notNullable();
-			group.date('end_date').unique().notNullable();
-			group.integer('exercise_length',100).unique().notNullable().defaultTo(30);
-			group.integer('days_per_week',100).unique().notNullable().defaultTo(5);
+			group.string('name', 150).notNullable();
+			group.text('description', 2000);
+			group.string('stage', 150).notNullable().defaultTo('draft');
+			group.date('start_date').notNullable();
+			group.date('end_date').notNullable();
+			// group.integer('exercise_length').notNullable().defaultTo(30);
+			// group.integer('days_per_week').notNullable().defaultTo(5);
 			group.timestamps();
 		})
 		.then(function (table) {
@@ -60,11 +60,11 @@ bookshelf.knex.schema.hasTable('exercises')
 		bookshelf.knex.schema.createTable('exercises', function (exercise){
 			exercise.increments('id').primary();
 			exercise.string('title', 150);
-			exercise.text('description', 2000).defaultTo('');
-			exercise.date('date');
-			// exercise.time('start_time');
-			// exercise.time('end_time');
-			exercise.integer('user_id',255);
+			exercise.text('description', 2000);
+			exercise.date('date').notNullable();
+			exercise.time('start_time');
+			exercise.time('end_time');
+			exercise.integer('user_id', 255).notNullable();
 			exercise.timestamps();
 		})
 		.then(function (table) {
@@ -81,8 +81,7 @@ bookshelf.knex.schema.hasTable('memberships')
 			membership.increments('id').primary();
 			membership.integer('user_id', 255);
 			membership.integer('group_id', 255);
-			membership.string('membership', 200).notNullable().defaultTo('guest');			
-			membership.boolean('invite_accepted');
+			membership.string('membership', 200).notNullable().defaultTo('invitee');			
 			membership.timestamps();
 		})
 		.then(function (table) {

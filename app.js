@@ -16,23 +16,15 @@ var bookshelf = require('./database/schema');
 
 //passport
 passport.use(new LocalStrategy(function (username, password, done) {
-    console.log('LocalStrategy email: ' + username);
-
     new User({email: username}).fetch().then(function (data) {
         var user = data;
-        console.log('LocalStrategy user: ' + data.toJSON());
         if(user === null) {
             return done(null, false, {message: 'Invalid email or password'});
         } else {
-            console.log('LocalStrategy password: ' + password);
             var hash = bcrypt.hashSync(password);
-            console.log('hash:' + hash);
-            console.log(user.get('password'));
-            // user = data.toJSON();
             if(!bcrypt.compareSync(password, user.get('password'))) {
                 return done(null, false, {message: 'Invalid email or password'});
             } else {
-                console.log('password matched')
                 return done(null, user);
             }
         }
@@ -40,7 +32,6 @@ passport.use(new LocalStrategy(function (username, password, done) {
 }));
 
 passport.serializeUser(function (user, done) {
-    console.log("passport.serializeUser: " + user);
     done(null, user.get('email'));
 });
 
@@ -82,19 +73,18 @@ app.post('/group/create', GroupsController.create);
 app.get('/group/:id/edit',GroupsController.edit);
 app.post('/group/:id/update', GroupsController.update);
 app.post('/group/:id/delete', GroupsController.destroy);
-app.get('/groups/:id',GroupsController.gView)
-app.post('/groups/:id',GroupsController.gViewPost)
+app.get('/group/:id',GroupsController.show);
+
 
 //user routes
 app.get('/', UsersController.login_form);
 app.get('/register', UsersController.register);
 app.post('/register', UsersController.create);
-app.post('/login', UsersController.login)
+app.post('/login', UsersController.login);
 
 //exercise routes
-app.get('/exercises', ExercisesController.index);
-app.post('/exercise/create', ExercisesController.create)
-app.post('/exercise/:id/delete', ExercisesController.destroy);
+app.post('/exercise/:group_id/create/:date', ExercisesController.create);
+app.post('/exercise/:group_id/delete/:id', ExercisesController.destroy);
 
 //membership routes
 app.post('/group/:id/invite', MembershipsController.create);
