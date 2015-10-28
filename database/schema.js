@@ -43,8 +43,6 @@ bookshelf.knex.schema.hasTable('groups')
 			group.string('stage', 150).notNullable().defaultTo('draft');
 			group.date('start_date').notNullable();
 			group.date('end_date').notNullable();
-			// group.integer('exercise_length').notNullable().defaultTo(30);
-			// group.integer('days_per_week').notNullable().defaultTo(5);
 			group.timestamps();
 		})
 		.then(function (table) {

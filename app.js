@@ -85,6 +85,7 @@ app.post('/login', UsersController.login);
 app.post('/logout', UsersController.logout);
 
 //exercise routes
+//TODO: pull group id out of both/ instead use middleware per Logan
 app.post('/exercise/:group_id/create/:date', ExercisesController.create);
 app.post('/exercise/:group_id/delete/:id', ExercisesController.destroy);
 

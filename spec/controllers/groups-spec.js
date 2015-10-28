@@ -94,6 +94,7 @@ describe('GroupsController', function() {
 
     //show group page
     //TODO: Ask Kirk how to test for users and exercises to be defined
+    //TODO: split the three expects into three tests(code review)
     it('should load the group page', function (done) {
       request('http://localhost:3000/group/' + group.id, function(error, response, body) {
         expect(response.statusCode).toBe(200);

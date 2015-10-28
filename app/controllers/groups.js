@@ -51,8 +51,7 @@ exports.create = function (req, res){
 //GET
 //when clicked, views a single group
 exports.show = function (req, res){
-  var id = req.params.id;
-  Group.forge({id: id})
+  Group.forge({id: req.params.id})
   .fetch({
     withRelated: ['users']
   })
@@ -78,8 +77,7 @@ exports.edit = function (req, res){
 //POST
 //updated group information saved to db by group id
 exports.update = function (req, res){
-    var id = req.params.id;
-    Group.forge({id: id})
+    Group.forge({id: req.params.id})
     .fetch({require: true})
     .then(function (group){
         group.save({
@@ -102,8 +100,7 @@ exports.update = function (req, res){
 //POST
 //deletes group by group id
 exports.destroy = function (req, res){
-    var id = req.params.id;
-    Group.forge({id: id})
+    Group.forge({id: req.params.id})
     .destroy()
     .then(function (group){
         req.method = 'get';
