@@ -5,7 +5,7 @@ var User = require('../models/user')
 var Exercises = require('../collections/exercises');
 //POST
 //create exercise page
-exports.create = function (req, res){
+exports.logExercise = function (req, res){
   var group_id = req.params.group_id;
   var date = req.params.date;
   var user_id = req.user.id;
@@ -27,7 +27,7 @@ exports.create = function (req, res){
 
 //POST
 //deletes exercise by exercise id
-exports.destroy = function (req, res){
+exports.deleteExercise = function (req, res){
     var group_id = req.params.group_id;
     var id = req.params.id;
 

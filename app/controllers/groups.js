@@ -6,7 +6,7 @@ var Groups = require('../collections/groups');
 
 //GET
 //loads index page of groups -- list of groups
-exports.index = function(req, res){    
+exports.myGroups = function(req, res){    
   Groups.fetch()
   .then(function (data){
     res.render('groups/index',{
@@ -16,20 +16,37 @@ exports.index = function(req, res){
   })
   .catch(function (error) {
     console.log("errorrrrrr" + error.stack)
+  });
+}
+
+//GET
+//when clicked, views a single group
+exports.showOneGroup = function (req, res){
+  Group.forge({id: req.params.id})
+  .fetch({
+    withRelated: ['users']
   })
-  }
+  .then(function (data){
+    res.render('groups/show', {
+      data: data.toJSON()
+    })
+  })
+  .catch(function (error){
+    console.log("errorrrrrrGView" + error.stack)
+  })
+}
 
 //GET
 //renders create jade file in groups view
 exports.createForm = function (req, res){
-	res.render('groups/create',{
-		title: 'Create New Group'
-	});
+  res.render('groups/create',{
+    title: 'Create New Group'
+  });
 }
 
 //POST
 //create group page
-exports.create = function (req, res){
+exports.submitGroup = function (req, res){
   Group.forge({
     name: req.body.name,
     description: req.body.description,
@@ -49,26 +66,8 @@ exports.create = function (req, res){
 }
 
 //GET
-//when clicked, views a single group
-exports.show = function (req, res){
-  Group.forge({id: req.params.id})
-  .fetch({
-    withRelated: ['users']
-  })
-  .then(function (data){
-    res.render('groups/show', {
-      data: data.toJSON()
-    })
-  })
-  .catch(function (error){
-    console.log("errorrrrrrGView" + error.stack)
-  })
-}
-
-
-//GET
 //renders the edit group page 
-exports.edit = function (req, res){
+exports.editForm = function (req, res){
     res.render('groups/edit',{
         title: 'Edit Group'
     });
@@ -76,7 +75,7 @@ exports.edit = function (req, res){
 
 //POST
 //updated group information saved to db by group id
-exports.update = function (req, res){
+exports.submitEdit = function (req, res){
     Group.forge({id: req.params.id})
     .fetch({require: true})
     .then(function (group){
@@ -99,7 +98,7 @@ exports.update = function (req, res){
 
 //POST
 //deletes group by group id
-exports.destroy = function (req, res){
+exports.deleteOneGroup = function (req, res){
     Group.forge({id: req.params.id})
     .destroy()
     .then(function (group){

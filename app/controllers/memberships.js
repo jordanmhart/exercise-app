@@ -13,7 +13,7 @@ var Memberships = require('../collections/memberships');
 //POST
 //admin create membership for user
 //TODO: enable admin to specify email instead of id
-exports.create = function (req, res){
+exports.invite = function (req, res){
   var user_id = req.body.user_id;
   var group_id = req.params.id;
 

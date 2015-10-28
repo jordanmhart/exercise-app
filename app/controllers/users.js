@@ -9,9 +9,19 @@ var Users = require('../collections/users');
 var bcrypt = require('bcrypt-nodejs'),
     passport = require('passport');
 
+//GET
+//loads login page -- home page[for now]
+exports.showLoginPage = function (req, res){
+  if(!req.isAuthenticated()){
+    res.render('index');
+  } else {
+    res.redirect('/groups');
+  }  
+}
+
 //POST
-//Login
-exports.login = function(req, res, next) {
+//authenticated users will be able to login
+exports.submitLogin = function(req, res, next) {
   passport.authenticate(
     'local',
     {failureRedirect: '/register'},
@@ -35,8 +45,38 @@ exports.login = function(req, res, next) {
     }
   )(req, res, next);
 };
+
 //GET
-exports.show = function (req, res, next) {
+//gets user's register view jade file 
+exports.showRegisterPage = function (req, res){
+  res.render('users/register',{
+    title: 'Register'
+  });
+}
+
+//POST
+//user info saved to db when registration is complete
+exports.submitRegister = function (req, res){
+  var hash = bcrypt.hashSync(req.body.password);
+  User.forge({
+    full_name: req.body.full_name,
+    initials: req.body.initials,
+    password: hash,
+    email: req.body.email,
+    bio: req.body.bio
+  })
+  .save()
+  .then( function (data) {
+    req.method = 'get';
+    res.redirect('/');
+  })
+  .catch(function (error) {
+    console.log("errorrrrrr" + error.stack)
+  })
+}
+
+//GET
+exports.showOneUserLog = function (req, res, next) {
   User.forge({
     id: req.params.user_id
   })
@@ -64,43 +104,6 @@ exports.logout = function(req, res, next) {
    }
 };
 
-//GET
-//loads login page -- home page[for now]
-exports.login_form = function (req, res){
-  if(!req.isAuthenticated()){
-    res.render('index');
-  } else {
-    res.redirect('/groups');
-  }  
-}
 
-//GET
-//gets user's register view file 
-exports.register = function (req, res){
-  res.render('users/register',{
-    title: 'Register'
-  });
-}
-
-//POST
-//user info saved to db when registration is complete
-exports.create = function (req, res){
-  var hash = bcrypt.hashSync(req.body.password);
-  User.forge({
-    full_name: req.body.full_name,
-    initials: req.body.initials,
-    password: hash,
-    email: req.body.email,
-    bio: req.body.bio
-  })
-  .save()
-  .then( function (data) {
-    req.method = 'get';
-    res.redirect('/');
-  })
-  .catch(function (error) {
-    console.log("errorrrrrr" + error.stack)
-  })
-}
 
 

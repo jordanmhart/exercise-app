@@ -67,31 +67,31 @@ var GroupsController = require('./app/controllers/groups'),
 
 //--------------------------ROUTES--------------------------
 //group routes
-app.get('/groups', GroupsController.index);
+app.get('/groups', GroupsController.myGroups);
+//TODO: ask Kirk how to keep from conflicting if moved down a line
 app.get('/group/create', GroupsController.createForm);
-app.post('/group/create', GroupsController.create);
-app.get('/group/:id/edit', GroupsController.edit);
-app.post('/group/:id/update', GroupsController.update);
-app.post('/group/:id/delete', GroupsController.destroy);
-app.get('/group/:id', GroupsController.show);
+app.get('/group/:id', GroupsController.showOneGroup);
+app.post('/group/create', GroupsController.submitGroup);
+app.get('/group/:id/edit', GroupsController.editForm);
+app.post('/group/:id/delete', GroupsController.deleteOneGroup);
 
 
 //user routes
-app.get('/', UsersController.login_form);
-app.get('/register', UsersController.register);
-app.get('/group/:group_id/user/:user_id', UsersController.show)
-app.post('/register', UsersController.create);
-app.post('/login', UsersController.login);
+app.get('/', UsersController.showLoginPage);
+app.post('/login', UsersController.submitLogin);
+app.get('/register', UsersController.showRegisterPage);
+app.post('/register', UsersController.submitRegister);
 app.post('/logout', UsersController.logout);
+app.get('/group/:group_id/user/:user_id', UsersController.showOneUserLog);
 
 //exercise routes
 //TODO: pull group id out of both/ instead use middleware per Logan
-app.post('/exercise/:group_id/create/:date', ExercisesController.create);
-app.post('/exercise/:group_id/delete/:id', ExercisesController.destroy);
+app.post('/exercise/:group_id/create/:date', ExercisesController.logExercise);
+app.post('/exercise/:group_id/delete/:id', ExercisesController.deleteExercise);
 
 //membership routes
-app.post('/group/:id/invite', MembershipsController.create);
-
+app.post('/group/:id/invite', MembershipsController.invite);
+app.post('/group/:id/update', GroupsController.submitEdit);
 app.listen(3000);
 console.log('listening on port 3000 and thinking of ice cream');
 
