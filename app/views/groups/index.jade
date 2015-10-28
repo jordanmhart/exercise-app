@@ -12,4 +12,7 @@ block content
       button#group-info-submit.btn.btn-default
         .group-name #{val.name} Title
         .group-description #{val.description}
-  
+    form(method='post', action='/group/#{val.id}/delete')
+                    button(type='submit').btn.btn-default Delete
+    a(href='/group/#{val.id}/edit') 
+      button.update-group Edit Group

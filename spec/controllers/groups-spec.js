@@ -116,7 +116,7 @@ describe('GroupsController', function() {
     //update a group
     it('should update a group', function(done) {
       var options = {
-        url: 'http://localhost:3000/group/' + group.id + '/update',
+        url: 'http://localhost:3000/group/' + group.id + '/edit',
         form: {
           name: 'updated group title',
           description: 'updated group description',

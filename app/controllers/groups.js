@@ -76,7 +76,8 @@ exports.editForm = function (req, res){
 //POST
 //updated group information saved to db by group id
 exports.submitEdit = function (req, res){
-    Group.forge({id: req.params.id})
+  var id = req.params.id;
+    Group.forge({id: id})
     .fetch({require: true})
     .then(function (group){
         group.save({

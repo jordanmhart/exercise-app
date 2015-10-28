@@ -1,4 +1,15 @@
 extends ../layout 
 
 block content
-    p edit group page
+    h1 Edit Your group
+    hr
+    form(role='form', method='post', action='/group/edit')
+      .form-group
+          input.form-control(type='text', name="name", placeholder='Enter Title of group')
+      .form-group
+          input.form-control(type='text', name="description", placeholder='Enter Description')
+      .form-group
+          input.form-control(type='date', name="start_date", placeholder='Enter start date')
+      .form-group
+          input.form-control(type='date', name="end_date", placeholder='Enter end date')  
+        button(type='submit').btn.btn-default Submit
