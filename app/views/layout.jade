@@ -8,8 +8,9 @@ html
         script(src='/js/bootstrap.min.js')
     body
         .nav 
-            a(href='/') Home 
-            a(href='/groups') My Groups 
-            form(method='post', action='/logout')
-                button(type='submit').btn.btn-default Logout
+            if user_id
+                a(href='/') Home 
+                a(href='/groups') My Groups 
+                form(method='post', action='/logout')
+                    button(type='submit').btn.btn-default Logout
         block content

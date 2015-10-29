@@ -1,47 +1,90 @@
 //models
 var Group = require('../models/group');
+var Membership = require('../models/membership');
 
 //collections
 var Groups = require('../collections/groups');
+var Users = require('../collections/users');
+var passport = require('passport');
 
 //GET
 //loads index page of groups -- list of groups
-exports.myGroups = function(req, res){    
-  Groups.fetch()
-  .then(function (data){
-    res.render('groups/index',{
-    title: 'My Groups',
-    data: data.toJSON()
+exports.myGroups = function(req, res){ 
+Users.fetch()
+.then(function (data){
+  if(!req.isAuthenticated()){
+    res.redirect('/');
+  } else {
+    Groups.fetch()
+    .then(function (data){
+      res.render('groups/index',{
+        title: 'My Groups',
+        user_id: req.user.get('id'),
+        data: data.toJSON()
+      })
     })
-  })
-  .catch(function (error) {
-    console.log("errorrrrrr" + error.stack)
-  });
+    .catch(function (error) {
+      console.log("errorrrrrr" + error.stack)
+    })
+  }
+})
 }
 
 //GET
 //when clicked, views a single group
 exports.showOneGroup = function (req, res){
-  Group.forge({id: req.params.id})
-  .fetch({
-    withRelated: ['users']
-  })
-  .then(function (data){
-    res.render('groups/show', {
-      data: data.toJSON()
+Users.fetch()
+.then(function (data){
+  if(!req.isAuthenticated()){
+    res.redirect('/');
+  } else {
+    Group.forge({id: req.params.id})
+    .fetch({
+      withRelated: ['users']
     })
-  })
-  .catch(function (error){
-    console.log("errorrrrrrGView" + error.stack)
-  })
+    .then(function (group){
+      Membership.forge({
+        group_id: group.id,
+        user_id: req.user.id
+      })
+      .fetch() //TODO: check for best practice
+      .then(function (membership){
+        if(membership){
+          res.render('groups/show', {
+            user_id: req.user.get('id'),
+            membership: membership.toJSON().membership,
+            group: group.toJSON()
+          })
+        }else{
+          res.render('groups/show', {
+            user_id: req.user.get('id'),
+            membership: 'none',
+            group: group.toJSON()
+          })
+        }
+      })
+    })
+    .catch(function (error){
+      console.log("errorrrrrrGView" + error.stack)
+    })
+  }
+})
 }
 
 //GET
 //renders create jade file in groups view
 exports.createForm = function (req, res){
-  res.render('groups/create',{
-    title: 'Create New Group'
-  });
+Users.fetch()
+.then(function (data){
+  if(!req.isAuthenticated()){
+    res.redirect('/');
+  } else {
+    res.render('groups/create',{
+      title: 'Create New Group',
+      user_id: req.user.get('id')
+    });
+  }
+})
 }
 
 //POST
@@ -56,9 +99,17 @@ exports.submitGroup = function (req, res){
     // days_per_week: req.body.days_per_week
   })
   .save()
-  .then(function (data) {
-    req.method = 'get';
-    res.redirect('/groups');
+  .then(function (group) {
+    Membership.forge({
+      group_id: group.id,
+      user_id: req.user.get('id'),
+      membership: 'admin'
+    })
+    .save()
+    .then(function (membership){
+      req.method = 'get'; //TODO: is this necessary?
+      res.redirect('/groups');
+    })
   })
   .catch(function (error) {
     console.log("errorrrrrr" + error.stack);
@@ -68,17 +119,18 @@ exports.submitGroup = function (req, res){
 //GET
 //renders the edit group page 
 exports.editForm = function (req, res){
-    Group.forge({id: req.params.id})
-    .fetch()
-    .then(function (data){
-      res.render('groups/edit',{
-          title: 'Edit Group',
-          data: data.toJSON()
-      });
-    })
-    .catch(function (error){
-      console.log("errorrrrrrGView" + error.stack)
-    })
+  Group.forge({id: req.params.id})
+  .fetch()
+  .then(function (data){
+    res.render('groups/edit',{
+      user_id: req.user.get('id'),
+      title: 'Edit Group',
+      data: data.toJSON()
+    });
+  })
+  .catch(function (error){
+    console.log("errorrrrrrGView" + error.stack)
+  })
 }
 
 //POST
