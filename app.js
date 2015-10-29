@@ -92,6 +92,7 @@ app.post('/exercise/:group_id/delete/:id', ExercisesController.deleteExercise);
 //membership routes
 app.post('/group/:id/invite', MembershipsController.invite);
 app.post('/group/:id/edit', GroupsController.submitEdit);
+app.post('/membership/:group_id/:user_id/delete', MembershipsController.removeFromGroup);
 app.listen(3000);
 console.log('listening on port 3000 and thinking of ice cream');
 

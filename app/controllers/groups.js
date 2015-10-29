@@ -68,9 +68,17 @@ exports.submitGroup = function (req, res){
 //GET
 //renders the edit group page 
 exports.editForm = function (req, res){
-    res.render('groups/edit',{
-        title: 'Edit Group'
-    });
+    Group.forge({id: req.params.id})
+    .fetch()
+    .then(function (data){
+      res.render('groups/edit',{
+          title: 'Edit Group',
+          data: data.toJSON()
+      });
+    })
+    .catch(function (error){
+      console.log("errorrrrrrGView" + error.stack)
+    })
 }
 
 //POST

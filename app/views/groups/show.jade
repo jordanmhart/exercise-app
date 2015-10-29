@@ -23,8 +23,11 @@ block content
   p
     ul Users
       each val in data.users
-        a(href='/group/#{data.id}/user/#{val.id}')
-          li #{val.initials}
+        li
+          a(href='/group/#{data.id}/user/#{val.id}')
+            span #{val.initials}
+          form(method='post', action='/membership/#{data.id}/#{val.id}/delete')
+            button(type='submit').btn.btn-default X
   p
     a(href='/groups')
       button.update-button Return to Groups List

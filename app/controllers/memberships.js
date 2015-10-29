@@ -42,16 +42,21 @@ exports.invite = function (req, res){
 
 //POST
 //delete membership
-// exports.destroy = function (req, res){
-//     var group_id = req.params.id;
-
-//     Membership.forge({id: id})
-//     .destroy()
-//     .then(function (membership){
-//         req.method = 'get';
-//         res.redirect('/group/' + group_id);
-//     })
-//     .catch(function (error) {
-//     console.log("errorrrrrr" + error.stack)
-//   });
-// };
+exports.removeFromGroup = function (req, res){
+  var user_id = req.params.user_id;
+  var group_id = req.params.group_id;
+  
+  Membership.forge({
+    user_id: user_id,
+    group_id: group_id
+  })
+  .query({where: {user_id: user_id}, andWhere: {group_id: group_id}})
+  .destroy()
+  .then(function (membership){
+    req.method = 'get';
+    res.redirect('/group/' + group_id);
+  })
+  .catch(function (error) {
+    console.log("errorrrrrr" + error.stack)
+  })
+};

@@ -46,49 +46,48 @@ describe('MembershipsController', function() {
   });
   
 
- //  describe('tests with data', function() {
- //    var membership;
- //    beforeEach(function(done) {
- //      new Membership({
- //        user_id: 1,
- //        group_id: 2,
- //        membership: 'salad',
- //        invite_accepted: false
- //      })
- //      .save()
- //      .then(function(newMembership) {
- //        membership = newMembership;
- //        done();
- //      });
- //    });
+  describe('tests with data', function() {
+    var membership;
+    beforeEach(function(done) {
+      new Membership({
+        user_id: 1,
+        group_id: 2,
+        membership: 'member'
+      })
+      .save()
+      .then(function(newMembership) {
+        membership = newMembership.toJSON();
+        done();
+      });
+    });
 
- //    afterEach(function(done) {
- //      new Membership({
- //        id: membership.id
- //      }).destroy()
- //        .then(done)
- //        .catch(function(error) {
- //          done.fail(error);
- //        });
- //    });
+    afterEach(function(done) {
+      new Membership({
+        id: membership.id
+      }).destroy()
+        .then(done)
+        .catch(function(error) {
+          done.fail(error);
+        });
+    });
     
- //    //delete a membership
- //    it('should delete a membership', function(done) {
- //      var options = {
- //        url: 'http://localhost:3000/membership/' + membership.id + '/delete'
- //      };
+    //delete a membership
+    it('should delete a membership', function(done) {
+      var options = {
+        url: 'http://localhost:3000/membership/' + membership.group_id + '/' + membership.user_id + '/delete'
+      };
 
- //      request.post(options, function(error, response, body) {
- //        expect(response.statusCode).toBe(302);
- //        new Membership({
- //          id: membership.id
- //        })
- //        .fetch()
- //        .then(function(deletedMembership) {
- //          expect(deletedMembership).toBeNull();
- //          done();
- //        });
- //      });
- //    });
- // });
+      request.post(options, function(error, response, body) {
+        expect(response.statusCode).toBe(302);
+        new Membership({
+          id: membership.id
+        })
+        .fetch()
+        .then(function(deletedMembership) {
+          expect(deletedMembership).toBeNull();
+          done();
+        });
+      });
+    });
+ });
 });

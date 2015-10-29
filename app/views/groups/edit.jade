@@ -3,7 +3,7 @@ extends ../layout
 block content
     h1 Edit Your group
     hr
-    form(role='form', method='post', action='/group/edit')
+    form(role='form', method='post', action='/group/#{data.id}/edit')
       .form-group
           input.form-control(type='text', name="name", placeholder='Enter Title of group')
       .form-group
