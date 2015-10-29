@@ -1,7 +1,7 @@
 extends layout 
 
 block content
-    p.lead Log In
+    h1 Log In
         p #{errorMessage}
         br
         form(role='form', action="/login",method="post", style='max-width: 500px;')
@@ -9,11 +9,9 @@ block content
                 input.form-control(type='text', name="username", placeholder='Enter Email')
             .form-group
                 input.form-control(type='password', name="password", placeholder='Password')
-            button.btn.btn-primary(type='submit') Submit
-            span  
-            a(href='/')
-                button.btn.btn-default(type="button") Cancel
-            p Not hustlin' for the holidays?  
-            a(href='/register') Register
-            span  
-            span here.
+            button.btn.btn-primary(type='submit') Login
+    span  
+    p Not hustlin' for the holidays?  
+    a(href='/register') Register
+    span  
+    span here.

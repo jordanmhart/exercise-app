@@ -83,11 +83,12 @@ exports.showOneUserLog = function (req, res, next) {
   .fetch({
     withRelated: ['exercises']
   })
-  .then( function(data){
+  .then(function (user){
     res.render('users/show', {
+      req_user_id: req.user.get('id'),
       title: 'Exercise Log',
       group_id: req.params.group_id,
-      data: data.toJSON()
+      param_user: user.toJSON()
     })
   })
   .catch(function (error) {

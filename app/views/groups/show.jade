@@ -1,41 +1,50 @@
 extends ../layout 
 
 block content
-  h1 Group
+  h1 #{group.name}
   hr
   p
     .summary
-      .group-name #{data.name} Title
-      .group-description #{data.description}
-      .group-startdate #{data.start_date} Start Date
-      .group-description #{data.end_date} End Date
+      .group-description #{group.description}
+      .group-startdate #{group.start_date} Start Date
+      .group-description #{group.end_date} End Date
   p
-    form(method='post', action='/exercise/#{data.id}/create/2015-10-26')
+    form(method='post', action='/exercise/#{group.id}/create/2015-10-26')
         button(type='submit').btn.btn-default Monday
-    form(method='post', action='/exercise/#{data.id}/create/2015-10-27')
+    form(method='post', action='/exercise/#{group.id}/create/2015-10-27')
         button(type='submit').btn.btn-default Tuesday
-    form(method='post', action='/exercise/#{data.id}/create/2015-10-28')
+    form(method='post', action='/exercise/#{group.id}/create/2015-10-28')
         button(type='submit').btn.btn-default Wednesday
-    form(method='post', action='/exercise/#{data.id}/create/2015-10-29')
+    form(method='post', action='/exercise/#{group.id}/create/2015-10-29')
         button(type='submit').btn.btn-default Thursday
-    form(method='post', action='/exercise/#{data.id}/create/2015-10-30')
+    form(method='post', action='/exercise/#{group.id}/create/2015-10-30')
         button(type='submit').btn.btn-default Friday
+  hr
   p
     ul Users
-      each val in data.users
+      each val in group.users
         li
-          a(href='/group/#{data.id}/user/#{val.id}')
+          a(href='/group/#{group.id}/user/#{val.id}')
             span #{val.initials}
-          form(method='post', action='/membership/#{data.id}/#{val.id}/delete')
-            button(type='submit').btn.btn-default X
+        if membership === 'admin'
+          form(method='post', action='/membership/#{group.id}/#{val.id}/delete')
+            button(type='submit').btn.btn-default x
+  hr
+  if membership === 'admin' 
+    p
+      h4 Invite your friends
+      form(role='form', method='post', action='/group/#{group.id}/invite') 
+        .form-group
+          input.form-control(type='text', name='user_id', placeholder='Enter user ID',style='max-width: 500px;')  
+        .form-group
+          input.form-control(type='text', name='membership', placeholder='Enter their role',style='max-width: 500px;')  
+        button(type='submit').btn.btn-default#group-invite-submit Submit
+    hr 
+    p
+      form(method='post', action='/group/#{group.id}/delete')
+        button(type='submit').btn.btn-default Delete Group
+      a(href='/group/#{group.id}/edit') 
+        button.update-group Edit Group    
   p
     a(href='/groups')
-      button.update-button Return to Groups List
-  p
-    p invite your friends
-    form(role='form', method='post', action='/group/#{data.id}/invite') 
-      .form-group
-        input.form-control(type='text', name='user_id', placeholder='Enter user ID')  
-      .form-group
-        input.form-control(type='text', name='membership', placeholder='Enter their role')  
-      button(type='submit').btn.btn-default#group-invite-submit Submit
+      button.update-button Return to My Groups

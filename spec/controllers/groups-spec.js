@@ -1,5 +1,6 @@
 var request = require('request');
 var Group = require('../../app/models/group');
+var Membership = require('../../app/models/membership');
 var GroupsController = require('../../app/controllers/groups');
 
 
@@ -44,6 +45,19 @@ describe('GroupsController', function() {
         .fetch()
         .then(function (group) {
           expect(group.id).toBeDefined();
+
+          new Membership({
+            group_id: group.id
+          })
+          .fetch()
+          .then(function (membership){
+            expect(membership.user_id).toBeDefined();
+            expect(membership.membership).toBe('admin');
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+
           new Group({
             id: group.id
           })
