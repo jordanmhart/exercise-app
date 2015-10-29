@@ -1,13 +1,12 @@
 //models
 var User = require('../models/user');
-  // Exercise = require('../models/exercise');
 
 //collections
 var Users = require('../collections/users');
-  // Exercises = require('../collections/exercises');
+
 //encryption
-var bcrypt = require('bcrypt-nodejs'),
-    passport = require('passport');
+var bcrypt = require('bcrypt-nodejs');
+var passport = require('passport');
 
 //GET
 //loads login page -- home page[for now]
@@ -21,12 +20,11 @@ exports.showLoginPage = function (req, res){
 
 //POST
 //authenticated users will be able to login
-exports.submitLogin = function(req, res, next) {
+exports.submitLogin = function (req, res, next) {
   passport.authenticate(
     'local',
     {failureRedirect: '/register'},
     function(err, user, info) {
-
       // if(err) {
       //     res.render('index', {title: 'Sign In', errorMessage: err.message});
       // }
@@ -34,8 +32,7 @@ exports.submitLogin = function(req, res, next) {
       // if(!user) {
       //     res.render('index', {title: 'Sign In', errorMessage: info.message});
       // }
-
-      req.logIn(user, function(err) {
+      req.logIn(user,function (err) {
         if(err) {
           res.render('index', {title: 'Sign In', errorMessage: err.message});
         } else {
@@ -66,7 +63,7 @@ exports.submitRegister = function (req, res){
     bio: req.body.bio
   })
   .save()
-  .then( function (data) {
+  .then(function (data) {
     req.method = 'get';
     res.redirect('/');
   })
@@ -76,6 +73,7 @@ exports.submitRegister = function (req, res){
 }
 
 //GET
+//shows single user's exercise log
 exports.showOneUserLog = function (req, res, next) {
   User.forge({
     id: req.params.user_id
@@ -96,13 +94,15 @@ exports.showOneUserLog = function (req, res, next) {
   })
 }
 
+//POST
+//user logs out
 exports.logout = function(req, res, next) {
-   if(!req.isAuthenticated()) {
-      notFound404(req, res, next);
-   } else {
+  if(!req.isAuthenticated()) {
+    notFound404(req, res, next);
+  } else {
       req.logout();
       res.redirect('/');
-   }
+  }
 };
 
 
