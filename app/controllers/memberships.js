@@ -2,6 +2,7 @@
 var Membership = require('../models/membership'),
   User = require('../models/user'),
   Group = require('../models/group');
+  
 //collections
 var Memberships = require('../collections/memberships');
 
