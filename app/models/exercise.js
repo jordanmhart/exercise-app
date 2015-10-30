@@ -4,10 +4,10 @@ var Exercise = bookshelf.Model.extend({
 	tableName: 'exercises',
 	hasTimestamps: true,
 	groups: function(){
-		return this.hasMany(Group, 'group_id');
+		return this.hasMany('Group', 'group_id');
 	},
 	users: function(){
-		return this.belongsTo(User, 'user_id');
+		return this.belongsTo('User', 'user_id');
 	}
 });
 
