@@ -80,7 +80,7 @@ exports.promoteUser = function (req, res){
     })
     .save()
     .then(function (membership){
-      res.redirect('/group/' + group_id);
+      res.redirect('/group/' + group_id + '/user/' + user_id);
     })
     .catch(function (error) {
       console.log("errorrrrrr" + error.stack)
@@ -109,7 +109,7 @@ exports.demoteUser = function (req, res){
     })
     .save()
     .then(function (membership){
-      res.redirect('/group/' + group_id);
+      res.redirect('/group/' + group_id + '/user/' + user_id);
     })
     .catch(function (error) {
       console.log("errorrrrrr" + error.stack)

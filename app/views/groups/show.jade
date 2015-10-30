@@ -27,13 +27,6 @@ block content
           a(href='/group/#{group.id}/user/#{val.id}')
             span #{val.initials} 
             span #{val.membership}
-        if membership === 'admin' 
-          form(method='post', action='/membership/#{group.id}/#{val.id}/delete')
-            button(type='submit').btn.btn-default Remove
-          form(method='post', action='/membership/#{group.id}/#{val.id}/promote')
-            button(type='submit').btn.btn-default Promote
-          form(method='post', action='/membership/#{group.id}/#{val.id}/demote')
-            button(type='submit').btn.btn-default Demote
   hr
   if membership === 'admin' 
     p
