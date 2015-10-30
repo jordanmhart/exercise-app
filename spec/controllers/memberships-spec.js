@@ -47,7 +47,9 @@ describe('MembershipsController', function() {
   
 
   describe('tests with data', function() {
-    var membership;
+    var membership_member;
+    var membership_admin;
+
     beforeEach(function(done) {
       new Membership({
         user_id: 1,
@@ -56,35 +58,94 @@ describe('MembershipsController', function() {
       })
       .save()
       .then(function(newMembership) {
-        membership = newMembership.toJSON();
+        membership_member = newMembership.toJSON();
+        done();
+      });
+      
+      new Membership({
+        user_id: 3,
+        group_id: 2,
+        membership: 'admin'
+      })
+      .save()
+      .then(function(newMembership) {
+        membership_admin = newMembership.toJSON();
         done();
       });
     });
 
     afterEach(function(done) {
       new Membership({
-        id: membership.id
-      }).destroy()
-        .then(done)
-        .catch(function(error) {
-          done.fail(error);
-        });
+        id: membership_member.id
+      })
+      .destroy()
+      .then(done)
+      .catch(function(error) {
+        done.fail(error);
+      });
+      
+      new Membership({
+        id: membership_admin.id
+      })
+      .destroy()
+      .then(done)
+      .catch(function(error) {
+        done.fail(error);
+      });
     });
     
     //delete a membership
     it('should delete a membership', function(done) {
       var options = {
-        url: 'http://localhost:3000/membership/' + membership.group_id + '/' + membership.user_id + '/delete'
+        url: 'http://localhost:3000/membership/' + membership_member.group_id + '/' + membership_member.user_id + '/delete'
       };
 
       request.post(options, function(error, response, body) {
         expect(response.statusCode).toBe(302);
         new Membership({
-          id: membership.id
+          id: membership_member.id
         })
         .fetch()
         .then(function(deletedMembership) {
           expect(deletedMembership).toBeNull();
+          done();
+        });
+      });
+    });
+
+    //admin promotes user to admin
+    it('should promote user to admin', function(done) {
+      var options = {
+        url: 'http://localhost:3000/membership/' + membership_member.group_id + '/' + membership_member.user_id + '/promote'
+      };
+
+      request.post(options, function(error, response, body) {
+        expect(response.statusCode).toBe(302);
+        new Membership({
+          id: membership_member.id
+        })
+        .fetch()
+        .then(function(membership) {
+          expect(membership.toJSON().membership).toBe('admin');
+          done();
+        });
+      });
+    });
+
+    //admin demotes user to member
+    it('should demote user to member', function(done) {
+      var options = {
+        url: 'http://localhost:3000/membership/' + membership_admin.group_id + '/' + membership_admin.user_id + '/demote'
+      };
+
+      request.post(options, function(error, response, body) {
+        expect(response.statusCode).toBe(302);
+        new Membership({
+          id: membership_admin.id
+        })
+        .fetch()
+        .then(function(membership) {
+          expect(membership.toJSON().membership).toBe('member');
           done();
         });
       });

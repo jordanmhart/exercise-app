@@ -61,3 +61,62 @@ exports.removeFromGroup = function (req, res){
     console.log("errorrrrrr" + error.stack)
   })
 };
+
+//POST
+//promotes member to admin
+exports.promoteUser = function (req, res){
+  var  user_id = req.params.user_id;
+  var group_id = req.params.group_id;
+
+  Membership.forge({
+    user_id: user_id,
+    group_id: group_id
+  })
+  .fetch()
+  .then(function (membership){
+    Membership.forge({
+      id: membership.id,
+      membership: 'admin'
+    })
+    .save()
+    .then(function (membership){
+      res.redirect('/group/' + group_id);
+    })
+    .catch(function (error) {
+      console.log("errorrrrrr" + error.stack)
+    })
+  })
+  .catch(function (error) {
+    console.log("errorrrrrr" + error.stack)
+  })
+}
+
+//POST
+//demotes admin to member
+exports.demoteUser = function (req, res){
+  var  user_id = req.params.user_id;
+  var group_id = req.params.group_id;
+
+  Membership.forge({
+    user_id: user_id,
+    group_id: group_id
+  })
+  .fetch()
+  .then(function (membership){
+    Membership.forge({
+      id: membership.id,
+      membership: 'member'
+    })
+    .save()
+    .then(function (membership){
+      res.redirect('/group/' + group_id);
+    })
+    .catch(function (error) {
+      console.log("errorrrrrr" + error.stack)
+    })
+  })
+  .catch(function (error) {
+    console.log("errorrrrrr" + error.stack)
+  })
+}
+

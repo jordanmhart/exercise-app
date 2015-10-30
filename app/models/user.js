@@ -1,6 +1,7 @@
 var bookshelf = require('../../database/schema');
 var Exercise = require('./exercise');
 var Membership = require('./membership');
+// var Group = require('./group');
 
 // var User = bookshelf.Model.extend({
 // 	groups: function(){

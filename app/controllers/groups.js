@@ -1,6 +1,8 @@
 //models
 var Group = require('../models/group');
 var Membership = require('../models/membership');
+var User = require('../models/user');
+
 
 //collections
 var Groups = require('../collections/groups');
@@ -9,25 +11,44 @@ var passport = require('passport');
 
 //GET
 //loads index page of groups -- list of groups
+// exports.myGroups = function(req, res){ 
+//   User.forge({
+//     id: req.user.get('id')
+//   })
+//   .fetch({
+//     withRelated:['groups']
+//   })
+//   .then(function (user){
+//     res.render('groups/index',{
+//       title: 'My Groups',
+//       user_id: req.user.get('id'),
+//       myGroups: user.toJSON().groups
+//     })
+//   })
+//   .catch(function (error) {
+//     console.log("errorrrrrr" + error.stack)
+//   })
+// }
+
 exports.myGroups = function(req, res){ 
-Users.fetch()
-.then(function (data){
-  if(!req.isAuthenticated()){
-    res.redirect('/');
-  } else {
-    Groups.fetch()
-    .then(function (data){
-      res.render('groups/index',{
-        title: 'My Groups',
-        user_id: req.user.get('id'),
-        data: data.toJSON()
+  Users.fetch()
+  .then(function (data){
+    if(!req.isAuthenticated()){
+      res.redirect('/');
+    } else {
+      Groups.fetch()
+      .then(function (data){
+        res.render('groups/index',{
+          title: 'My Groups',
+          user_id: req.user.get('id'),
+          myGroups: data.toJSON()
+        })
       })
-    })
-    .catch(function (error) {
-      console.log("errorrrrrr" + error.stack)
-    })
-  }
-})
+      .catch(function (error) {
+        console.log("errorrrrrr" + error.stack)
+      })
+    }
+  })
 }
 
 //GET
