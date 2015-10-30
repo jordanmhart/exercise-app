@@ -28,12 +28,14 @@ describe('UsersController', function() {
       var options = {
         url: 'http://localhost:3000/register',
         form: {
-          full_name: 'test name',
+          full_name: 'test full_name',
+          nickname: 'test nickname',
           email: 'test@email.com',
           password: 'test password',
           bio: 'tell me bout you no data'
         }
       };
+
 
       request.post(options, function(error, response, body) {
         expect(response.statusCode).toBe(302);
@@ -41,20 +43,13 @@ describe('UsersController', function() {
           email: 'test@email.com'
         })
         .fetch()
-        .then(function(user) {
-          expect(user.id).toBeDefined();
+        .then(function(createdUser) {
+          expect(createdUser.id).toBeDefined();
           new User({
-            id: user.id
+            id: createdUser.id
           })
-          .destroy()
-          .then(function(){
-            console.log("we have destroyed it");
-            done();
-          })
-          .catch(function(error) {
-            console.log(error);
-            done.fail(error);
-          });
+          .destroy();
+          done();
         });
       });
     });
@@ -66,7 +61,8 @@ describe('UsersController', function() {
 
     beforeEach(function(done) {
       new User({
-        full_name: 'test name',
+        full_name: 'test full_name',
+        nickname: 'test nickname',
         password: 'test password',
         email: 'test@email.com2',
         bio: 'tell me bout you with data'
@@ -94,7 +90,7 @@ describe('UsersController', function() {
       var options = {
         url: 'http://localhost:3000/login',
         form: {
-          email: 'test@email.com',
+          email: 'test@email.com2',
           password: 'test password'
         }
       };

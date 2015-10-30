@@ -1,18 +1,56 @@
 extends layout 
 
 block content
-    p.lead Log In
-        br
-        form(role='form', action="/login",method="post", style='max-width: 300px;')
-            .form-group
-            input.form-control(type='text', name="username", placeholder='Enter Username')
-            .form-group
-            input.form-control(type='password', name="password", placeholder='Password')
-            button.btn.btn-primary(type='submit') Submit
-            span  
-            a(href='/')
-                button.btn.btn-default(type="button") Cancel
-            p Not hustlin' for the holidays?  
-            a(href='/register') Register
-            span  
-            span here.
+    .row
+    .col-lg-offset-4.col-lg-4(style='margin-top:75px')
+        .block-unit(style='text-align:center;')
+            img.img-circle(src='/images/face80x80.jpg')
+    .col-lg-4.col-lg-offset-4(style='margin-top:10px')
+      .row
+          // sign up/log in tabs
+          .text-center
+            .btn-group
+              a.big.btn.btn-success(href='#new', role='tab', data-toggle='tab')
+                i.fa.fa-plus
+                |  Sign Up
+              a.big.btn.btn-default(href='#user', role='tab', data-toggle='tab')
+                i.fa.fa-user
+                |  Log In
+          .tab-content
+            #new.tab-pane.fade.in.active
+              span
+              fieldset
+              form(role='form', action='/register', method='post', style='max-width: 500px;')
+                .form-group
+                  .right-inner-addon
+                    i.fa.fa-envelope
+                    input.form-control.input-lg(placeholder='Enter Email', type='text', name='username')
+                .form-group
+                  .right-inner-addon
+                    i.fa.fa-key
+                    input.form-control.input-lg(placeholder='Password', type='password', name='password')
+                .form-group
+                  .right-inner-addon
+                    i.fa.fa-key
+                    input.form-control.input-lg(placeholder='Confirm Password', id='', type='password', name='password_confirmation')
+                br
+                .text-center
+                  a(href='/')
+                      button.btn.btn-success(type='submit') REGISTER
+              
+            #user.tab-pane.fade
+              span
+              fieldset
+              form(role='form', action='/login', method='post', style='max-width: 500px;')
+                .form-group
+                  .right-inner-addon
+                    i.fa.fa-envelope
+                    input.form-control.input-lg(placeholder='Enter Email', type='text', name='username')
+                .form-group
+                  .right-inner-addon
+                    i.fa.fa-key
+                    input.form-control.input-lg(placeholder='Password', type='password', name='password')
+                br
+                .text-center
+                  a(href='/groups')
+                  button.btn.btn-default(type='submit') LOGIN

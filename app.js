@@ -10,7 +10,9 @@ var express = require('express'),
 
 //controllers
 var GroupsController = require('./app/controllers/groups'),
-  UsersController = require('./app/controllers/users');
+  UsersController = require('./app/controllers/users')
+  MembershipsController = require('./app/controllers/memberships'),
+  ExercisesController = require('./app/controllers/exercises');
 
 //database
 var bookshelf = require('./database/schema');
@@ -77,8 +79,11 @@ app.use(passport.session());
 //--------------------------ROUTES--------------------------
 //group routes
 app.get('/groups', GroupsController.index);
-app.get('/creategroup', GroupsController.creategroup);
-app.post('/creategroup', GroupsController.create);
+app.get('/group/create', GroupsController.createForm);
+app.post('/group/create', GroupsController.create);
+app.get('/group/:id/edit',GroupsController.edit);
+app.post('/group/:id/update', GroupsController.update);
+app.post('/group/:id/delete', GroupsController.destroy);
 
 //user routes
 app.get('/', UsersController.login_form);
@@ -86,7 +91,13 @@ app.get('/register', UsersController.register);
 app.post('/register', UsersController.create);
 app.post('/login', UsersController.login)
 
+//exercise routes
+app.get('/exercises', ExercisesController.index);
+app.post('/exercise/create', ExercisesController.create)
+app.post('/exercise/:id/delete', ExercisesController.destroy);
 
+//membership routes
+app.post('/group/:id/invite', MembershipsController.create);
 
 app.listen(3000);
 console.log('listening on port 3000 and thinking of ice cream');

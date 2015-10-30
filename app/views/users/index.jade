@@ -1,0 +1,9 @@
+extends layout 
+
+block content
+    h1 Welcome #{user.nickname} 
+    p
+        img.userphoto(src='photo_url')
+        #{user.email}
+        #{user.bio}
+
