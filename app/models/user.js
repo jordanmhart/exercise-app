@@ -1,7 +1,5 @@
 var bookshelf = require('../../database/schema');
-var Exercise = require('./exercise');
-var Membership = require('./membership');
-// var Group = require('./group');
+// var Exercise = require('./exercise');
 
 // var User = bookshelf.Model.extend({
 // 	groups: function(){
@@ -17,12 +15,12 @@ var User = bookshelf.Model.extend({
 	tableName: 'users',
 	hasTimestamps: true,
 	groups: function(){
-		return this.belongsToMany(Group)
-		.through(Membership)
+		return this.belongsToMany('Group')
+		.through('Membership')
 		.withPivot(['membership']);
 	},
 	exercises: function(){
-		return this.hasMany(Exercise, 'user_id');
+		return this.hasMany('Exercise', 'user_id');
 	}
 });
 
