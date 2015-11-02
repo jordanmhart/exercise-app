@@ -29,7 +29,7 @@ exports.invite = function (req, res){
     Membership.forge({
       user_id: user_id,
       group_id: group_id,
-      membership: req.body.membership
+      membership: req.body.role
     })
     .save()
     .then( function (data) {
@@ -81,7 +81,7 @@ exports.promoteUser = function (req, res){
   .then(function (membership){
     Membership.forge({
       id: membership.id,
-      membership: 'admin'
+      role: 'admin'
     })
     .save()
     .then(function (membership){
@@ -110,7 +110,7 @@ exports.demoteUser = function (req, res){
   .then(function (membership){
     Membership.forge({
       id: membership.id,
-      membership: 'member'
+      role: 'member'
     })
     .save()
     .then(function (membership){

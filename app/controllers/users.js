@@ -108,8 +108,8 @@ exports.showOneUserLog = function (req, res, next) {
             title: 'Exercise Log',
             group_id: req.params.group_id,
             shown_user: shown_user.toJSON(),
-            viewing_membership: viewing_membership.toJSON().membership,
-            shown_membership: shown_membership.toJSON().membership,
+            viewing_membership: viewing_membership.toJSON().role,
+            shown_membership: shown_membership.toJSON().role,
             req_user_id: req.user.get('id')
           })
         })

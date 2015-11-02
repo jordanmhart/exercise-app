@@ -52,7 +52,7 @@ describe('GroupsController', function() {
           .fetch()
           .then(function (membership){
             expect(membership.user_id).toBeDefined();
-            expect(membership.membership).toBe('admin');
+            expect(membership.role).toBe('admin');
           })
           .catch(function(error) {
             console.log(error);

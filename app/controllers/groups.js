@@ -83,7 +83,7 @@ Users.fetch()
           if(membership){
             res.render('groups/show', {
               user_id: req.user.get('id'),
-              membership: membership.toJSON().membership,
+              membership: membership.toJSON().role,
               group: group.toJSON()
             })
           }else{
@@ -135,7 +135,7 @@ exports.submitGroup = function (req, res){
     Membership.forge({
       group_id: group.id,
       user_id: req.user.get('id'),
-      membership: 'admin'
+      role: 'admin'
     })
     .save()
     .then(function (membership){
