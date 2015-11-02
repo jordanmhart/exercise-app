@@ -9,33 +9,30 @@ block content
       .group-startdate #{group.start_date} Start Date
       .group-description #{group.end_date} End Date
   p
-    form(method='post', action='/exercise/#{group.id}/create/2015-10-26')
-        button(type='submit').btn.btn-default Monday
-    form(method='post', action='/exercise/#{group.id}/create/2015-10-27')
-        button(type='submit').btn.btn-default Tuesday
-    form(method='post', action='/exercise/#{group.id}/create/2015-10-28')
-        button(type='submit').btn.btn-default Wednesday
-    form(method='post', action='/exercise/#{group.id}/create/2015-10-29')
-        button(type='submit').btn.btn-default Thursday
-    form(method='post', action='/exercise/#{group.id}/create/2015-10-30')
-        button(type='submit').btn.btn-default Friday
+    form(method='post', action='/exercise/#{group.id}/create')
+      .form-group
+        input.form-control(type='date', name="date", placeholder='Enter date')
+      button(type='submit').btn.btn-default Log Exercise
   hr
   p
     ul Users
-      each val in group.users
+      each user in group.users
         li
-          a(href='/group/#{group.id}/user/#{val.id}')
-            span #{val.initials} 
-            span #{val.membership}
+          a(href='/group/#{group.id}/user/#{user.id}')
+            span #{user.email} 
+          span #{user._pivot_membership}  
+          span Exercises: #{user.exercises.length}
   hr
   if membership === 'admin' 
     p
       h4 Invite your friends
       form(role='form', method='post', action='/group/#{group.id}/invite') 
         .form-group
-          input.form-control(type='text', name='user_id', placeholder='Enter user ID',style='max-width: 500px;')  
+          input.form-control(type='text', name='email', placeholder='Enter user email',style='max-width: 500px;')  
         .form-group
-          input.form-control(type='text', name='membership', placeholder='Enter their role',style='max-width: 500px;')  
+          select.form-control(type='text', name='membership',style='max-width: 500px;')
+            option member
+            option admin
         button(type='submit').btn.btn-default#group-invite-submit Submit
     hr 
     p
