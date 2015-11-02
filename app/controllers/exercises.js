@@ -9,7 +9,7 @@ var Exercises = require('../collections/exercises');
 //create exercise page
 exports.logExercise = function (req, res){
   var group_id = req.params.group_id;
-  var date = req.params.date;
+  var date = req.body.date;
   var user_id = req.user.id;
 
   Exercise.forge({

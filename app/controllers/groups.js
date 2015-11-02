@@ -52,7 +52,7 @@ exports.myGroups = function(req, res){
 // }
 
 //GET
-//when clicked, views a single group
+//when clicked, views a single group with the participants and their exercise logs
 exports.showOneGroup = function (req, res){
 Users.fetch()
 .then(function (data){
@@ -64,7 +64,6 @@ Users.fetch()
       withRelated: ['users', 'users.exercises']
     })
     .then(function (group){
-      console.log(group.toJSON().users[0].exercises[1]);
       Membership.forge({
         group_id: group.id,
         user_id: req.user.id

@@ -98,7 +98,8 @@ exports.showOneUserLog = function (req, res, next) {
           group_id: req.params.group_id,
           shown_user: shown_user.toJSON(),
           viewing_membership: viewing_membership.toJSON().membership,
-          shown_membership: shown_membership.toJSON().membership
+          shown_membership: shown_membership.toJSON().membership,
+          req_user_id: req.user.get('id')
 
         })
       })
