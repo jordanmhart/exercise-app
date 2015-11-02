@@ -1,4 +1,4 @@
-var request = require('request');
+// var request = require('request');
 var session = require('supertest-session');
 var exerciseApp = require('../../app');
 var User = require('../../app/models/user');
@@ -8,15 +8,26 @@ var testSession = null;
 
 describe('UsersController', function() {
 
-  describe('tests without data', function() {
 
+  describe('tests without data', function() {
+    beforeEach(function() {
+      testSession = session(exerciseApp);
+    });
+    
     // show login page
     it('should load the login form', function (done) {
-      request('http://localhost:3000', function(error, response, body) {
-        expect(response.statusCode).toBe(200);
-        done();
+      console.log(testSession);
+      testSession.get('/')
+      .expect(200)
+      .end(function (err, res) {
+        if (err){
+          done.fail(err);
+        } else {
+          done();
+        }
       });
     });
+
 
     // show registration form
     it('should load the registration form', function (done) {
@@ -118,85 +129,12 @@ describe('UsersController', function() {
         });
       });
     });
-    TODO: refactor to make group id and user id dynamic
+    // TODO: refactor to make group id and user id dynamic
     it('should load user exercise log', function (done) {
       testSession.get('/', function(error, response, body) {
         expect(response.statusCode).toBe(200);
         done();
       });
     });
-
-  //   // //list users questions
-  //   // it('should list a users questions', function(done) {
-  //   //   request('http://localhost:3000/', function(error, response, body) {
-  //   //     expect(response.statusCode).toBe(200);
-  //   //     done();
-  //   //   });
-  //   // });
-
-  //   //show
-  //   it('should return a users profile', function(done){
-  //     request('http://localhost:3000/user/' + user.id, function(error, response, body) {
-  //       expect(response.statusCode).toBe(200);
-  //       done();
-  //     });
-  //   });
-
-  //   //edit user profile 
-  //   it('should load the edit profile page', function (done) {
-  //     request('http://localhost:3000/user/' + user.id + '/edit', function(error, response, body) {
-  //       expect(response.statusCode).toBe(200);
-  //       done();
-  //     });
-  //   });
-
-  //   //update user profile
-  //   it('should update a user profile', function(done) {
-  //     var options = {
-  //       url: 'http://localhost:3000/user/' + user.id + '/edit',
-  //       form: {
-  //         username: 'test username',
-  //         password: 'test password',
-  //         email: 'test@email.com',
-  //         bio: 'tell me bout you'
-  //       }
-  //     };
-
-  //     request.post(options, function(error, response, body) {
-  //       expect(response.statusCode).toBe(302);
-  //       new User({
-  //         username: 'test username'
-  //       })
-  //       .fetch()
-  //       .then(function(userCheck) {
-  //         expect(userCheck.id).toBeDefined();
-  //         done();
-  //       });
-  //     });
-  //   });
-
-  //   it('should delete a user', function (done) {
-  //     var options = {
-  //       url: 'http://localhost:3000/user/' + user.id + '/delete'
-  //     };
-
-  //     //TODO - check this style with Kirk, is there a better way?
-  //     request.post(options, function(error, response, body) {
-  //       expect(response.statusCode).toBe(302);
-  //       var userCheck;
-                
-  //       new User({
-  //         id: user.id
-  //       })
-  //       .fetch()
-  //       .then(function (returnedUser){
-  //         userCheck = user.id;
-  //       });
-
-  //       expect(userCheck).toBeUndefined();
-  //       done();
-  //     });
-  //   });
-    
   });
 });
