@@ -22,11 +22,14 @@ block content
   hr
   p
     ul Users
-      each val in group.users
+      each user in group.users
         li
-          a(href='/group/#{group.id}/user/#{val.id}')
-            span #{val.initials} 
-            span #{val.membership}
+          a(href='/group/#{group.id}/user/#{user.id}')
+            span #{user.initials} 
+            span #{user._pivot_membership}
+          ul Exercises
+            each exercise in user.exercises
+                li #{exercise.date}
   hr
   if membership === 'admin' 
     p

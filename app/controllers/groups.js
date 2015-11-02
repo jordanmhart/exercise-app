@@ -61,14 +61,15 @@ Users.fetch()
   } else {
     Group.forge({id: req.params.id})
     .fetch({
-      withRelated: ['users']
+      withRelated: ['users', 'users.exercises']
     })
     .then(function (group){
+      console.log(group.toJSON().users[0].exercises[1]);
       Membership.forge({
         group_id: group.id,
         user_id: req.user.id
       })
-      .fetch() //TODO: check for best practice
+      .fetch() //TODO: check for best practice, should be able to access by pivot
       .then(function (membership){
         if(membership){
           res.render('groups/show', {
