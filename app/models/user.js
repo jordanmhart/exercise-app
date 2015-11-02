@@ -17,7 +17,7 @@ var User = bookshelf.Model.extend({
 	groups: function(){
 		return this.belongsToMany('Group')
 		.through('Membership')
-		.withPivot(['membership']);
+		.withPivot(['role']);
 	},
 	exercises: function(){
 		return this.hasMany('Exercise', 'user_id');

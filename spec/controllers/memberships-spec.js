@@ -13,14 +13,14 @@ describe('MembershipsController', function() {
         url: 'http://localhost:3000/group/1/invite',
         form: {
           user_id: 1,
-          membership: 'invitee'
+          role: 'member'
         }
       };
 
       request.post(options, function (error, response, body) {
         expect(response.statusCode).toBe(302);
         new Membership({
-          membership: 'invitee'
+          role: 'member'
         })
         .fetch()
         .then(function (membership) {
@@ -54,7 +54,7 @@ describe('MembershipsController', function() {
       new Membership({
         user_id: 1,
         group_id: 2,
-        membership: 'member'
+        role: 'member'
       })
       .save()
       .then(function(newMembership) {
@@ -65,7 +65,7 @@ describe('MembershipsController', function() {
       new Membership({
         user_id: 3,
         group_id: 2,
-        membership: 'admin'
+        role: 'admin'
       })
       .save()
       .then(function(newMembership) {
@@ -126,7 +126,7 @@ describe('MembershipsController', function() {
         })
         .fetch()
         .then(function(membership) {
-          expect(membership.toJSON().membership).toBe('admin');
+          expect(membership.toJSON().role).toBe('admin');
           done();
         });
       });
@@ -145,7 +145,7 @@ describe('MembershipsController', function() {
         })
         .fetch()
         .then(function(membership) {
-          expect(membership.toJSON().membership).toBe('member');
+          expect(membership.toJSON().role).toBe('member');
           done();
         });
       });

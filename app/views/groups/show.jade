@@ -3,11 +3,11 @@ extends ../layout
 block content
   h1 #{group.name}
   hr
-  p
+  h2
     .summary
-      .group-description #{group.description}
-      .group-startdate #{group.start_date} Start Date
-      .group-description #{group.end_date} End Date
+      .group-startdate #{group.start_date.toDateString()} to #{group.end_date.toDateString()}
+      .group-description Price: $#{group.price}
+  p #{group.description}
   p
     form(method='post', action='/exercise/#{group.id}/create')
       .form-group
@@ -20,17 +20,17 @@ block content
         li
           a(href='/group/#{group.id}/user/#{user.id}')
             span #{user.email} 
-          span #{user._pivot_membership}  
+          span #{user._pivot_role}  
           span Exercises: #{user.exercises.length}
   hr
-  if membership === 'admin' 
+  if role === 'admin' 
     p
       h4 Invite your friends
       form(role='form', method='post', action='/group/#{group.id}/invite') 
         .form-group
           input.form-control(type='text', name='email', placeholder='Enter user email',style='max-width: 500px;')  
         .form-group
-          select.form-control(type='text', name='membership',style='max-width: 500px;')
+          select.form-control(type='text', name='role',style='max-width: 500px;')
             option member
             option admin
         button(type='submit').btn.btn-default#group-invite-submit Submit

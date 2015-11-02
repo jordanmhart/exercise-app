@@ -39,6 +39,7 @@ bookshelf.knex.schema.hasTable('groups')
 		bookshelf.knex.schema.createTable('groups', function (group){
 			group.increments('id').primary();
 			group.string('name', 150).notNullable();
+			group.decimal('price');
 			group.text('description', 2000);
 			group.string('stage', 150).notNullable().defaultTo('draft');
 			group.date('start_date').notNullable();
@@ -79,7 +80,7 @@ bookshelf.knex.schema.hasTable('memberships')
 			membership.increments('id').primary();
 			membership.integer('user_id', 255);
 			membership.integer('group_id', 255);
-			membership.string('membership', 200).notNullable().defaultTo('invitee');			
+			membership.string('role', 200).notNullable().defaultTo('invitee');			
 			membership.timestamps();
 		})
 		.then(function (table) {

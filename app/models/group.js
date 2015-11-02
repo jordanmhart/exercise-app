@@ -12,7 +12,7 @@ var Group = bookshelf.Model.extend({
 	users: function(){
 		return this.belongsToMany('User')
 		.through('Membership')
-		.withPivot(['membership']);
+		.withPivot(['role']);
 	}
 });
 
