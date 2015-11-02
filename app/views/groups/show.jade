@@ -3,11 +3,11 @@ extends ../layout
 block content
   h1 #{group.name}
   hr
-  p
+  h2
     .summary
-      .group-description #{group.description}
-      .group-startdate #{group.start_date} Start Date
-      .group-description #{group.end_date} End Date
+      .group-startdate #{group.start_date.toDateString()} to #{group.end_date.toDateString()}
+      .group-description Price: $#{group.price}
+  p #{group.description}
   p
     form(method='post', action='/exercise/#{group.id}/create')
       .form-group

@@ -83,7 +83,7 @@ Users.fetch()
           if(membership){
             res.render('groups/show', {
               user_id: req.user.get('id'),
-              membership: membership.toJSON().role,
+              role: membership.toJSON().role,
               group: group.toJSON()
             })
           }else{
@@ -126,7 +126,8 @@ exports.submitGroup = function (req, res){
     name: req.body.name,
     description: req.body.description,
     start_date: req.body.start_date,
-    end_date: req.body.end_date
+    end_date: req.body.end_date,
+    price: req.body.price
     // exercise_length: req.body.exercise_length,
     // days_per_week: req.body.days_per_week
   })
@@ -176,7 +177,8 @@ exports.submitEdit = function (req, res){
             name: req.body.name,
             description: req.body.description,
             start_date: req.body.start_date,
-            end_date: req.body.end_date
+            end_date: req.body.end_date,
+            price: req.body.price
         })
         .then(function (data){
             req.method = 'get';
