@@ -5,11 +5,11 @@ block content
     hr
     form(role='form', method='post', action='/group/#{data.id}/edit')
       .form-group
-          input.form-control(type='text', name="name", placeholder='Enter Title of group')
+          input.form-control(type='text', name="name", placeholder='#{data.name}')
       .form-group
-          input.form-control(type='text', name="description", placeholder='Enter Description')
+          input.form-control(type='text', name="description", placeholder='#{data.description}')
       .form-group
-          input.form-control(type='date', name="start_date", placeholder='Enter start date')
+          input.form-control(type='date', name="start_date", placeholder='#{data.start_date}')
       .form-group
-          input.form-control(type='date', name="end_date", placeholder='Enter end date')  
+          input.form-control(type='date', name="end_date", placeholder='#{data.end_date}')  
         button(type='submit').btn.btn-default Submit

@@ -1,6 +1,7 @@
 //models
 var User = require('../models/user');
 var Membership = require('../models/membership');
+var Group = require('../models/group');
 //collections
 var Users = require('../collections/users');
 
@@ -75,34 +76,47 @@ exports.submitRegister = function (req, res){
 //GET
 //shows single user's exercise log
 exports.showOneUserLog = function (req, res, next) {
-  User.forge({id: req.params.user_id})
-  .fetch({
-    withRelated: ['exercises']
-  })
-  .then(function (shown_user){
-    Membership.forge({
-      group_id: req.params.group_id,
-      user_id: req.params.user_id
+  Group.forge({id: req.params.group_id})
+  .fetch()
+  .then(function (group){
+    var groupStartDate = group.toJSON().start_date;
+    var groupEndDate = group.toJSON().end_date; 
+
+    User.forge({id: req.params.user_id})
+    .fetch({
+      withRelated: [{exercises: function (qb) {
+        qb
+        .where('date', '>', groupStartDate) 
+        .andWhere('date', '<', groupEndDate) 
+      }}]
     })
-    .fetch() //TODO: check for best practice
-    .then(function (shown_membership){
+    .then(function (shown_user){
       Membership.forge({
         group_id: req.params.group_id,
-        user_id: req.user.get('id')
+        user_id: req.params.user_id
       })
-      .fetch()
-      .then(function (viewing_membership){
-        res.render('users/show',{
-          viewing_user_id: req.user.get('id'),
-          title: 'Exercise Log',
+      .fetch() //TODO: check for best practice
+      .then(function (shown_membership){
+        Membership.forge({
           group_id: req.params.group_id,
-          shown_user: shown_user.toJSON(),
-          viewing_membership: viewing_membership.toJSON().membership,
-          shown_membership: shown_membership.toJSON().membership,
-          req_user_id: req.user.get('id')
-
+          user_id: req.user.get('id')
+        })
+        .fetch()
+        .then(function (viewing_membership){
+          res.render('users/show',{
+            viewing_user_id: req.user.get('id'),
+            title: 'Exercise Log',
+            group_id: req.params.group_id,
+            shown_user: shown_user.toJSON(),
+            viewing_membership: viewing_membership.toJSON().membership,
+            shown_membership: shown_membership.toJSON().membership,
+            req_user_id: req.user.get('id')
+          })
         })
       })
+    })
+    .catch(function (error) {
+      console.log("errorrrrrr" + error.stack)
     })
   })
   .catch(function (error) {

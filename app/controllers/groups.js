@@ -60,33 +60,44 @@ Users.fetch()
     res.redirect('/');
   } else {
     Group.forge({id: req.params.id})
-    .fetch({
-      withRelated: ['users', 'users.exercises']
-    })
-    .then(function (group){
-      Membership.forge({
-        group_id: group.id,
-        user_id: req.user.id
+    .fetch()
+    .then(function (group1){
+      var groupStartDate = group1.toJSON().start_date;
+      var groupEndDate = group1.toJSON().end_date;
+
+      Group.forge({id: req.params.id})
+      .fetch({
+        withRelated: ['users', {'users.exercises' : function (qb) {
+          qb
+          .where('date', '>', groupStartDate) 
+          .andWhere('date', '<', groupEndDate) 
+        }}]
       })
-      .fetch() //TODO: check for best practice, should be able to access by pivot
-      .then(function (membership){
-        if(membership){
-          res.render('groups/show', {
-            user_id: req.user.get('id'),
-            membership: membership.toJSON().membership,
-            group: group.toJSON()
-          })
-        }else{
-          res.render('groups/show', {
-            user_id: req.user.get('id'),
-            membership: 'none',
-            group: group.toJSON()
-          })
-        }
+      .then(function (group){
+        Membership.forge({
+          group_id: group.id,
+          user_id: req.user.id
+        })
+        .fetch() //TODO: check for best practice, should be able to access by pivot
+        .then(function (membership){
+          if(membership){
+            res.render('groups/show', {
+              user_id: req.user.get('id'),
+              membership: membership.toJSON().membership,
+              group: group.toJSON()
+            })
+          }else{
+            res.render('groups/show', {
+              user_id: req.user.get('id'),
+              membership: 'none',
+              group: group.toJSON()
+            })
+          }
+        })
       })
-    })
-    .catch(function (error){
-      console.log("errorrrrrrGView" + error.stack)
+      .catch(function (error){
+        console.log("errorrrrrrGView" + error.stack)
+      })
     })
   }
 })
@@ -163,7 +174,9 @@ exports.submitEdit = function (req, res){
     .then(function (group){
         group.save({
             name: req.body.name,
-            description: req.body.description
+            description: req.body.description,
+            start_date: req.body.start_date,
+            end_date: req.body.end_date
         })
         .then(function (data){
             req.method = 'get';
