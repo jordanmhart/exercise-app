@@ -29,7 +29,7 @@ exports.invite = function (req, res){
     Membership.forge({
       user_id: user_id,
       group_id: group_id,
-      membership: req.body.role
+      role: req.body.role
     })
     .save()
     .then( function (data) {
