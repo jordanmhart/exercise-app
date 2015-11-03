@@ -3,14 +3,14 @@ html
     head
         title= title
         link(href='/stylesheets/bootstrap.min.css', rel='stylesheet')
-        link(href='/stylesheets/styles.css', rel='stylesheet')
+        link(href='/stylesheets/main.css', rel='stylesheet')
         script(src='/js/jquery.js')
         script(src='/js/bootstrap.min.js')
     body
         .nav 
-            if user_id
-                a(href='/') Home 
-                a(href='/groups') My Groups 
+            a(href='/') Home 
+            a(href='/groups') My Groups 
+            if user_id || req_user_id
                 form(method='post', action='/logout')
                     button(type='submit').btn.btn-default Logout
         block content
