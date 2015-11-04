@@ -6,7 +6,9 @@ License: MIT
 
 ## Team
 Technical Project Management - Jordan Hart, jordan@learntechlabs.com
+
 Backend Development - Dechen Chuteng
+
 Frontend Development and Design - Melody Schwartz
 
 ## Technologies Used
