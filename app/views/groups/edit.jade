@@ -1,0 +1,17 @@
+extends ../layout 
+
+block content
+    h1 Edit Your group
+    hr
+    form(role='form', method='post', action='/group/#{data.id}/edit')
+      .form-group
+          input.form-control(type='text', name="name", placeholder='#{data.name}')
+      .form-group
+          input.form-control(type='text', name="description", placeholder='#{data.description}')
+      .form-group
+          input.form-control(type='text', name="price", placeholder='#{data.price}')
+      .form-group
+          input.form-control(type='date', name="start_date", placeholder='#{data.start_date}')
+      .form-group
+          input.form-control(type='date', name="end_date", placeholder='#{data.end_date}')  
+        button(type='submit').btn.btn-default Submit

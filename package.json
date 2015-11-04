@@ -2,7 +2,7 @@
   "name": "exerciseapp",
   "version": "0.0.1",
   "description": "this is an exercise app",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -28,6 +28,10 @@
     "passport": "^0.3.0",
     "passport-local": "^1.0.0",
     "pg": "^4.4.3",
-    "request": "^2.65.0"
+    "request": "^2.65.0",
+    "supertest-session": "^1.2.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0"
   }
 }

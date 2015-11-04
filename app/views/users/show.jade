@@ -1,0 +1,25 @@
+extends ../layout 
+
+block content
+    h1 #{shown_user.full_name}
+    ul Exercises
+        each val in shown_user.exercises
+            li
+                span #{val.date} 
+                if shown_user.id === req_user_id
+                    form(method='post', action='/exercise/#{group_id}/delete/#{val.id}')
+                        button(type='submit').btn.btn-default Delete
+
+    p
+        if viewing_membership === 'admin' 
+            form(method='post', action='/membership/#{group_id}/#{shown_user.id}/delete')
+                button(type='submit').btn.btn-default Remove
+            if shown_membership === 'member' 
+              form(method='post', action='/membership/#{group_id}/#{shown_user.id}/promote')
+                button(type='submit').btn.btn-default Promote
+            if shown_membership === 'admin'
+              form(method='post', action='/membership/#{group_id}/#{shown_user.id}/demote')
+                button(type='submit').btn.btn-default Demote
+    p
+        a(href='/group/#{group_id}')
+            button.update-button Return to Group

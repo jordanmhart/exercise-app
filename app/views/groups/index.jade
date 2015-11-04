@@ -1,4 +1,16 @@
 extends ../layout 
 
 block content
-	p Hello World!
+  h1 Your Groups
+  a(href='/group/create') Create A New Group
+
+  h2 Groups
+  hr
+  each val in myGroups
+    p
+    a(href='/group/#{val.id}')
+      button#group-info-submit.btn.btn-default
+        .group-name #{val.name} Title
+        .group-description #{val.description}
+    hr
+    hr

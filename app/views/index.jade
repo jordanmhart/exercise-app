@@ -1,0 +1,17 @@
+extends layout 
+
+block content
+    h1 Log In
+        p #{errorMessage}
+        br
+        form(role='form', action="/login",method="post", style='max-width: 500px;')
+            .form-group
+                input.form-control(type='text', name="username", placeholder='Enter Email')
+            .form-group
+                input.form-control(type='password', name="password", placeholder='Password')
+            button.btn.btn-primary(type='submit') Login
+    span  
+    p Not hustlin' for the holidays?  
+    a(href='/register') Register
+    span  
+    span here.

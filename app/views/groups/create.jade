@@ -1,0 +1,27 @@
+extends ../layout 
+
+block content
+    p.lead Create Group
+        br
+        form(role='form', action="/group/create", method="post", style='max-width: 500px;')
+            .form-group
+                input.form-control(type='text', name="name", placeholder='Enter Title of group')
+            .form-group
+                input.form-control(type='text', name="description", placeholder='Enter Description')
+            .form-group
+                input.form-control(type='text', name="price", placeholder='Enter Price')
+            //- .form-group
+            //-     input.form-control(type='integer', name="exercise_length", placeholder= 2)
+            .form-group
+                input.form-control(type='date', name="start_date", placeholder='Enter start date')
+            .form-group
+                input.form-control(type='date', name="end_date", placeholder='Enter end date')  
+            //- .form-group
+            //-     input.form-control(type='integer', name="days_per_week", placeholder='Enter your days per week')                  
+            button.btn.btn-primary(type='submit') Submit
+            span  
+            a(href='/')
+                button.btn.btn-default(type="button") Cancel
+            p
+            a(href='/groups') Back to Groups
+            span
